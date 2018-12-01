@@ -1,6 +1,13 @@
 grammar Smoola;
+
+@header {
+    import main.ast.*;
+    import main.ast.node.*;
+    import main.ast.node.Program;
+}
+
     program:
-        mainClass (classDeclaration)* EOF
+        mainClass (classDeclaration)* EOF { Program program = new Program(); }
     ;
     mainClass:
         // name should be checked later

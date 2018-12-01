@@ -1,6 +1,6 @@
 package main.symbolTable;
 
-import ast.Type.Type;
+import main.ast.Type.Type;
 
 public abstract class SymbolTableVariableItemBase extends SymbolTableItem {
 
