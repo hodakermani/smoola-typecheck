@@ -1,8 +1,8 @@
 package main.ast.node.expression.Value;
 
-import ast.Type.Type;
-import ast.Visitor;
-import ast.node.expression.Expression;
+import main.ast.Type.Type;
+import main.ast.Visitor;
+import main.ast.node.expression.Expression;
 
 public abstract class Value extends Expression {
     public Type getType() {

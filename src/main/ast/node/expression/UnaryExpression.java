@@ -1,6 +1,6 @@
 package main.ast.node.expression;
 
-import ast.Visitor;
+import main.ast.Visitor;
 
 public class UnaryExpression extends Expression {
 

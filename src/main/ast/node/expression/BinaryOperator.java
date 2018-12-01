@@ -1,7 +1,7 @@
 package main.ast.node.expression;
 
 public enum BinaryOperator {
-    add, sub, mult, div, and, or, eq, neq, lt, gt, assign
+    //add, sub, mult, div, and, or, eq, neq, lt, gt, assign
 
     PLUS("+"),
     MINUS("-"),
@@ -14,5 +14,9 @@ public enum BinaryOperator {
     LESS("<"),
     GREATER(">"),
     NOT("!"),
-    ASSIGN("="),
+    ASSIGN("=");
+    private final String codeRep;
+    BinaryOperator(String codeRep) {
+        this.codeRep = codeRep;
+    }
 }

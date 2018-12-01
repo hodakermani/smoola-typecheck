@@ -1,5 +1,4 @@
 package main.ast;
-import java.util.Optional;
 import main.ast.node.Program;
 import main.ast.node.declaration.ClassDeclaration;
 import main.ast.node.declaration.MethodDeclaration;
@@ -28,8 +27,7 @@ public class VisitorImpl implements Visitor {
 
     @Override
     public void visit(MethodDeclaration n) {
-        n.getBody().ifPresent(l -> l.accept(this));
-        n.getReturnType(); //todo: check accept for type
+        n.getBody().forEach(l -> l.accept(this));
         n.getName().accept(this);
         n.getArgs().forEach(p -> p.accept(this));
         n.getLocalVars().forEach(v -> v.accept(this));
@@ -49,15 +47,13 @@ public class VisitorImpl implements Visitor {
 
     @Override
     public void visit(BinaryExpression binaryExpression) {
-      binaryExpression.getBinaryOperator(); //todo: accept?
         binaryExpression.getLeft().accept(this);
         binaryExpression.getRight().accept(this);
     }
 
     @Override
     public void visit(Identifier identifier) {
-        //TODO: implement appropriate visit functionality
-        identifier.getClass()
+        identifier.accept(this);
     }
 
     @Override
@@ -83,50 +79,55 @@ public class VisitorImpl implements Visitor {
 
     @Override
     public void visit(This instance) {
-       //todo: accept?
+       instance.accept(this);
     }
 
     @Override
     public void visit(UnaryExpression unaryExpression) {
-        unaryExpression.getUnaryOperator(); //todo: accept for unary operator
+        unaryExpression.getValue().accept(this);
     }
 
     @Override
     public void visit(BooleanValue value) {
-        //todo
+        value.accept(this);
     }
 
     @Override
     public void visit(IntValue value) {
+        value.accept(this);
     }
 
     @Override
     public void visit(StringValue value) {
-        //TODO: implement appropriate visit functionality
+        value.accept(this);
     }
 
     @Override
     public void visit(Assign assign) {
-        //TODO: implement appropriate visit functionality
+        assign.accept(this);
+
     }
 
     @Override
     public void visit(Block block) {
-        //TODO: implement appropriate visit functionality
+        block.getBody().forEach(b -> b.accept(this));
     }
 
     @Override
     public void visit(Conditional conditional) {
-        //TODO: implement appropriate visit functionality
+        conditional.getAlternativeBody().accept(this);
+        conditional.getConsequenceBody().accept(this);
+        conditional.getExpression().accept(this);
     }
 
     @Override
     public void visit(While loop) {
-        //TODO: implement appropriate visit functionality
+        loop.getBody().accept(this);
+        loop.getCondition().accept(this);
     }
 
     @Override
     public void visit(Write write) {
-        //TODO: implement appropriate visit functionality
+       write.accept(this);
     }
 }

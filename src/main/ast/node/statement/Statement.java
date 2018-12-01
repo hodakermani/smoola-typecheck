@@ -1,7 +1,7 @@
 package main.ast.node.statement;
 
-import ast.Visitor;
-import ast.node.Node;
+import main.ast.Visitor;
+import main.ast.node.Node;
 
 public class Statement extends Node {
 
