@@ -7,7 +7,7 @@ grammar Smoola;
 }
 
     program:
-        mainClass (classDeclaration)* EOF { Program program = new Program(); }
+        mainClass (classDeclaration)* EOF
     ;
     mainClass:
         // name should be checked later
