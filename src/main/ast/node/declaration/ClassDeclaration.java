@@ -15,6 +15,13 @@ public class ClassDeclaration extends Declaration{
         this.name = name;
         this.parentName = parentName;
     }
+    public ClassDeclaration(Identifier name) {
+        this.name = name;
+
+    }
+    public ClassDeclaration() {
+
+    }
 
     public Identifier getName() {
         return name;

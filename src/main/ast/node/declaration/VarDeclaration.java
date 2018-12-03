@@ -12,6 +12,12 @@ public class VarDeclaration extends Declaration {
         this.identifier = identifier;
         this.type = type;
     }
+    public VarDeclaration(Identifier identifier) {
+        this.identifier = identifier;
+    }
+
+    public VarDeclaration() {
+    }
 
     public Identifier getIdentifier() {
         return identifier;

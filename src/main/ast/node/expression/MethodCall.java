@@ -14,6 +14,9 @@ public class MethodCall extends Expression {
         this.methodName = methodName;
     }
 
+    public MethodCall() {
+    }
+
     private ArrayList<Expression> args = new ArrayList<>();
 
     public Expression getInstance() {

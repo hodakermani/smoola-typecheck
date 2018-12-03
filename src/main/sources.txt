@@ -1,13 +1,13 @@
-./SmoolaPass1Parser.java
 ./symbolTable/SymbolTable.java
 ./symbolTable/SymbolTableItem.java
 ./symbolTable/ItemNotFoundException.java
-./symbolTable/Utils.java
 ./symbolTable/SymbolTableVariableItemBase.java
 ./symbolTable/SymbolTableMethodItem.java
+./symbolTable/SymbolTableClassItem.java
 ./symbolTable/ItemAlreadyExistsException.java
 ./symbolTable/Stack.java
-./SmoolaPass1Listener.java
+./SmoolaListener.java
+./SmoolaBaseListener.java
 ./ast/Visitor.java
 ./ast/Type/Type.java
 ./ast/Type/UserDefinedType/UserDefinedType.java
@@ -44,5 +44,5 @@
 ./ast/node/declaration/VarDeclaration.java
 ./ast/node/declaration/Declaration.java
 ./ast/node/declaration/ClassDeclaration.java
-./SmoolaPass1BaseListener.java
-./SmoolaPass1Lexer.java
+./SmoolaLexer.java
+./SmoolaParser.java

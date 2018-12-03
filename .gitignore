@@ -1,11 +1,17 @@
 # Created by https://www.gitignore.io/api/intellij,visualstudiocode
 
+./src/main/run.sh
+
 ## Antlr
 ./src/*.jar
 ./src/main/*.jar
 
-## Java Class files
+## Trash files
 ./src/**/*.class
+./src/main/*.class
+./src/main/*.tokens
+./src/main/Smoola*.java
+./src/main/*.interp
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm

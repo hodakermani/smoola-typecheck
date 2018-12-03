@@ -8,6 +8,10 @@ import main.ast.node.statement.*;
 
 
 public interface Visitor {
+
+    void setPassNumber(int passNumber);
+    void incLineNumber();
+
     void visit(Program program);
 
     //Declarations

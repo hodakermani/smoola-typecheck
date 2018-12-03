@@ -8,6 +8,8 @@ public class NewClass extends Expression {
     public NewClass(Identifier className) {
         this.className = className;
     }
+    public NewClass() {
+    }
 
     public Identifier getClassName() {
         return className;

@@ -13,6 +13,8 @@ public class BinaryExpression extends Expression {
         this.right = right;
         this.binaryOperator = binaryOperator;
     }
+    public BinaryExpression() {
+    }
 
     public Expression getLeft() {
         return left;

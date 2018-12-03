@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd /Users/hoda/Documents/UT/Fall97/PLC/phase2/smoola-AST/src/main
-sudo curl -O https://www.antlr.org/download/antlr-4.7.1-complete.jar
+#sudo curl -O https://www.antlr.org/download/antlr-4.7.1-complete.jar
 export CLASSPATH=".:/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH"
 
 rm *.class

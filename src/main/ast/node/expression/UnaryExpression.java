@@ -11,6 +11,8 @@ public class UnaryExpression extends Expression {
         this.unaryOperator = unaryOperator;
         this.value = value;
     }
+    public UnaryExpression() {
+    }
 
     public Expression getValue() {
         return value;
