@@ -50,8 +50,8 @@ grammar Smoola;
 
 
     methodDeclaration returns [MethodDeclaration methodDeclare]:
-        'def' ID { MethodDeclaration mtd = new MethodDeclaration(ID)  } ('(' ')' | ('(' ID { $varDeclare = new VarDeclaration(ID); }  ':' t=type { $varDeclare.setType($t.typeDef); mtd.addArg($varDeclare); }
-         (',' ID { VarDeclaration varDeclare2 = new VarDeclaration(ID) } ':' tt=type { varDeclare2.setType($tt.typeDef); $mtd.addArg($varDeclare2) } )* ')')) ':' ttt=type  { mtd.setReturnType($ttt.typeDef); } '{'
+        'def' ID { MethodDeclaration mtd = new MethodDeclaration(ID)  } ('(' ')' | ('(' ID { VarDeclaration varDeclare = new VarDeclaration(ID); }  ':' t=type { varDeclare.setType($t.typeDef); mtd.addArg(varDeclare); }
+         (',' ID { VarDeclaration varDeclare2 = new VarDeclaration(ID) } ':' tt=type { varDeclare2.setType($tt.typeDef); mtd.addArg(varDeclare2) } )* ')')) ':' ttt=type  { mtd.setReturnType($ttt.typeDef); } '{'
           (v=varDeclaration { mtd.addLocalVar($v.variableDeclaration) }) *
           s=statements { $s.stmnts.forEach( v -> mtd.addStatement(v) ) }
          'return' ex=expression { mtd.setReturnValue($ex.expr) } ';' '}'
@@ -90,7 +90,7 @@ grammar Smoola;
 	;
 
     expressionAssignment returns [Expression expr]:
-		ex=expressionOr { BinaryExpression binaryExpr = new BinaryExpression();  binaryExpr.setLeft($ex.expr) } '=' { $op = BinaryOperator.ASSIGN; binaryExpr.setBinaryOperator($op); }
+		ex=expressionOr { BinaryExpression binaryExpr = new BinaryExpression();  binaryExpr.setLeft($ex.expr) } '=' { BinaryOperator op = BinaryOperator.ASSIGN; binaryExpr.setBinaryOperator(op); }
 		 exx=expressionAssignment { binaryExpr.setRight($exx.expr) }
 	    |	expressionOr
 	;
@@ -100,71 +100,71 @@ grammar Smoola;
 		ex=expressionAnd { BinaryExpression binaryExpr = new BinaryExpression();  binaryExpr.setLeft($ex.expr) } expressionOrTemp[binaryExpr]
 	;
 
-    expressionOrTemp [BinaryExpression b] returns [BinaryExpression binaryExpr]:
-		'||' {$op = BinaryOperator.OR; b.setBinaryOperator($op); }  ex=expressionAnd { b.setRight($ex.expr); } exx=expressionOrTemp[b] {$exx.setLeft(b)}
+    expressionOrTemp [Expression b] returns [Expression expr]:
+		'||' {BinaryOperator op = BinaryOperator.OR; b.setBinaryOperator(op); }  ex=expressionAnd { b.setRight($ex.expr); } exx=expressionOrTemp[b] {$exx.expr.setLeft(b)}
 	    |
 	;
 
     expressionAnd returns [Expression expr]:
-		ex=expressionEq { $binaryExpr = new BinaryExpression();  $binaryExpr.setLeft($ex.expr); } expressionAndTemp[$binaryExpr]
+		ex=expressionEq { BinaryExpression binaryExpr = new BinaryExpression();  binaryExpr.setLeft($ex.expr); } expressionAndTemp[binaryExpr]
 	;
 
-    expressionAndTemp[BinaryExpression b] returns [BinaryExpression binaryExpr]:
-		'&&' {$op = BinaryOperator.AND; b.setBinaryOperator($op); } ex=expressionEq { b.setRight($ex.expr); } exx=expressionAndTemp[b] {$exx.setLeft(b)}
+    expressionAndTemp[Expression b] returns [Expression expr]:
+		'&&' {BinaryOperator op = BinaryOperator.AND; b.setBinaryOperator(op); } ex=expressionEq { b.setRight($ex.expr); } exx=expressionAndTemp[b] {$exx.expr.setLeft(b)}
 	    |
 	;
 
     expressionEq returns [Expression expr]:
-		ex=expressionCmp  { $binaryExpr = new BinaryExpression();  $binaryExpr.setLeft($ex.expr); } expressionEqTemp[$binaryExpr]
+		ex=expressionCmp  { BinaryExpression binaryExpr = new BinaryExpression();  binaryExpr.setLeft($ex.expr); } expressionEqTemp[binaryExpr]
 	;
 
-    expressionEqTemp[BinaryExpression b] returns [BinaryExpression binaryExpr]:
-		('==' {$op = BinaryOperator.EQUALS; b.setBinaryOperator($op); } | '<>' {$op = BinaryOperator.NOT_EQUALS; b.setBinaryOperator($op); } ) ex=expressionCmp { b.setRight($ex.expr); } expressionEqTemp[b] {$exx.setLeft(b)}
+    expressionEqTemp[Expression b] returns [Expression expr]:
+		('==' {BinaryOperator op = BinaryOperator.EQUALS; b.setBinaryOperator(op); } | '<>' {op = BinaryOperator.NOT_EQUALS; b.setBinaryOperator(op); } ) ex=expressionCmp { b.setRight($ex.expr); } exx=expressionEqTemp[b] {$exx.expr.setLeft(b)}
 	    |
 	;
 
     expressionCmp returns [Expression expr]:
-		expressionAdd { $binaryExpr = new BinaryExpression();  $binaryExpr.setLeft($ex.expr); } expressionCmpTemp[$binaryExpr]
+		ex=expressionAdd { BinaryExpression binaryExpr = new BinaryExpression();  binaryExpr.setLeft($ex.expr); } expressionCmpTemp[binaryExpr]
 	;
 
-    expressionCmpTemp[BinaryExpression b] returns [BinaryExpression binaryExpr]:
-		('<' {$op = BinaryOperator.LESS; b.setBinaryOperator($op); } | '>' {$op = BinaryOperator.GREATER; b.setBinaryOperator($op); }) ex=expressionAdd { b.setRight($ex.expr); } exx=expressionCmpTemp[b] {$exx.setLeft(b)}
+    expressionCmpTemp[Expression b] returns [Expression expr]:
+		('<' {BinaryOperator op = BinaryOperator.LESS; b.setBinaryOperator(op); } | '>' {BinaryOperator op = BinaryOperator.GREATER; b.setBinaryOperator(op); }) ex=expressionAdd { b.setRight($ex.expr); } exx=expressionCmpTemp[b] {$exx.expr.setLeft(b)}
 	    |
 	;
 
     expressionAdd returns [Expression expr]:
-		expressionMult { $binaryExpr = new BinaryExpression();  $binaryExpr.setLeft($ex.expr); } expressionAddTemp[$binaryExpr]
+		ex=expressionMult { BinaryExpression binaryExpr = new BinaryExpression();  binaryExpr.setLeft($ex.expr); } expressionAddTemp[binaryExpr]
 	;
 
-    expressionAddTemp[BinaryExpression b] returns [BinaryExpression binaryExpr]:
-		('+' {$op = BinaryOperator.PLUS; b.setBinaryOperator($op); } | '-' {$op = BinaryOperator.MINUS; b.setBinaryOperator($op); }) ex=expressionMult { b.setRight($ex.expr); } expressionAddTemp[b] {$exx.setLeft(b)}
+    expressionAddTemp[Expression b] returns [Expression expr]:
+		('+' {BinaryOperator op = BinaryOperator.PLUS; b.setBinaryOperator(op); } | '-' {BinaryOperator op = BinaryOperator.MINUS; b.setBinaryOperator(op); }) ex=expressionMult { b.setRight($ex.expr); } exx=expressionAddTemp[b] {$exx.expr.setLeft(b)}
 	    |
 	;
 
         expressionMult returns [Expression expr]:
-		ex=expressionUnary { $binaryExpr = new BinaryExpression();  $binaryExpr.setLeft($ex.expr); } expressionMultTemp[$binaryExpr]
+		ex=expressionUnary { BinaryExpression binaryExpr = new BinaryExpression();  binaryExpr.setLeft($ex.expr); } expressionMultTemp[binaryExpr]
 	;
 
-    expressionMultTemp[BinaryExpression b] returns [BinaryExpression binaryExpr]:
-		('*' {$op = BinaryOperator.MULTIPLY; b.setBinaryOperator($op); } | '/' {$op = BinaryOperator.DIVIDE; b.setBinaryOperator($op); }) ex=expressionUnary  { b.setRight($ex.expr); } exx=expressionMultTemp[b] {$exx.setLeft(b)}
+    expressionMultTemp[Expression b] returns [Expression expr]:
+		('*' {BinaryOperator op = BinaryOperator.MULTIPLY; b.setBinaryOperator(op); } | '/' {BinaryOperator op = BinaryOperator.DIVIDE; b.setBinaryOperator(op); }) ex=expressionUnary  { b.setRight($ex.expr); } exx=expressionMultTemp[b] {$exx.expr.setLeft(b)}
 	    |
 	;
 
-    expressionUnary returns [Expression expr]: { $unary = new UnaryExpression()}
-		('!' {$op = UnaryOperator.NOT; $unary.setUnaryOperator($op); } | '-' {$op = UnaryOperator.MINUS; $unary.setUnaryOperator($op); }) ex=expressionUnary {$unary.setValue(ex.expr)}
+    expressionUnary returns [Expression expr]: { UnaryExpression unary = new UnaryExpression()}
+		('!' {BinaryOperator op = UnaryOperator.NOT; unary.setUnaryOperator(op); } | '-' {BinaryOperator op = UnaryOperator.MINUS; unary.setUnaryOperator(op); }) ex=expressionUnary {unary.setValue(ex.expr)}
 	    |	expressionMem
 	;
 
-    expressionMem: { $array = new ArrayCall(); }
-		ex=expressionMethods { $array.setInstance($ex.expr) } expressionMemTemp[$array]
+    expressionMem: { ArrayCall array = new ArrayCall(); }
+		ex=expressionMethods { array.setInstance($ex.expr) } expressionMemTemp[array]
 	;
 
     expressionMemTemp[ArrayCall arr]:
 		'[' ex=expression {arr.setIndex($ex.expr)} ']'
 	    |
 	;
-	expressionMethods returns [Expression expr]: { $method = new MethodCall(); }
-	    ex=expressionOther {$method.setInstance($ex.expr)} expressionMethodsTemp[$method]
+	expressionMethods returns [Expression expr]: { MethodCall method = new MethodCall(); }
+	    ex=expressionOther {method.setInstance($ex.expr)} expressionMethodsTemp[method]
 	;
 	expressionMethodsTemp[MethodCall method] returns [Expression expr]:
 	    '.' (ID { method.setMethodName(ID) } '(' ')' | ID { method.setMethodName(ID) } '(' (ex=expression { method.addArg($ex.expr) }
@@ -172,16 +172,16 @@ grammar Smoola;
 	    |
 	;
     expressionOther returns [Expression expr]:
-		CONST_NUM { $type = new IntType();  $const = new IntValue(CONST_NUM,$type); }
+		CONST_NUM { IntType type = new IntType(); IntValue const = new IntValue(CONST_NUM,type); }
         |	CONST_STR
-        |   'new ' 'int' '[' CONST_NUM ']' {$array = new NewArray(); $array.setExpression($s.expr) }
-        |   'new '  ID {$newClass = new NewClass(); $newClass.setClassName(ID) } '(' ')'
+        |   'new ' 'int' '[' CONST_NUM ']' {NewArray array = new NewArray(); array.setExpression(const) }
+        |   'new '  ID {NewClass newClass = new NewClass(); newClass.setClassName(ID) } '(' ')'
         |   'this'
         |   'true'
         |   'false'
         |	ID
-        |   ID '[' s=expression ']' { $array = new ArrayCall(); $array.setInstance(ID) $array.setIndex($s.expr); }
-        |	'(' ss=expression ')' {  $method = new MethodCall(); $method.addArg($ss.expr); }
+        |   ID '[' s=expression ']' { ArrayCall array = new ArrayCall(); array.setInstance(ID) array.setIndex($s.expr); }
+        |	'(' ss=expression ')' {  MethodCall method = new MethodCall(); method.addArg($ss.expr); }
 	;
 	type returns [Type typeDef] :
 	    'int' |
