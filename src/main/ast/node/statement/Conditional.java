@@ -7,6 +7,7 @@ public class Conditional extends Statement {
     private Expression expression;
     private Statement consequenceBody;
     private Statement alternativeBody;
+    public Conditional() {}
 
     public Conditional(Expression expression, Statement consequenceBody) {
         this.expression = expression;

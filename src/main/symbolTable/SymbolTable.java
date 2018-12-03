@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.Stack;
 
 public class SymbolTable {
-
     String name;
     SymbolTable pre;
     HashMap<String, SymbolTableItem> items;

@@ -6,6 +6,9 @@ public class ArrayCall extends Expression {
     private Expression instance;
     private Expression index;
 
+
+    public ArrayCall() {
+    }
     public ArrayCall(Expression instance, Expression index) {
         this.instance = instance;
         this.index = index;

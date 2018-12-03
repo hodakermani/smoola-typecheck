@@ -6,6 +6,9 @@ import main.ast.node.expression.Expression;
 public class Write extends Statement {
     private Expression arg;
 
+    public Write() {
+
+    }
     public Write(Expression arg) {
         this.arg = arg;
     }
