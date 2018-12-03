@@ -1,7 +1,7 @@
 package main.ast.node.statement;
 
-import ast.Visitor;
-import ast.node.expression.Expression;
+import main.ast.Visitor;
+import main.ast.node.expression.Expression;
 
 public class Assign extends Statement {
     private Expression lValue;
@@ -11,6 +11,7 @@ public class Assign extends Statement {
         this.lValue = lValue;
         this.rValue = rValue;
     }
+    public Assign() { }
 
     public Expression getlValue() {
         return lValue;

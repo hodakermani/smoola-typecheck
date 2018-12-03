@@ -7,6 +7,8 @@ public class While extends Statement {
     private Expression condition;
     private Statement body;
 
+    public While() { }
+
     public While(Expression condition, Statement body) {
         this.condition = condition;
         this.body = body;

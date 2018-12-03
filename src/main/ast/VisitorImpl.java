@@ -27,6 +27,7 @@ public class VisitorImpl implements Visitor {
 
     @Override
     public void visit(MethodDeclaration n) {
+
         n.getBody().forEach(l -> l.accept(this));
         n.getName().accept(this);
         n.getArgs().forEach(p -> p.accept(this));
