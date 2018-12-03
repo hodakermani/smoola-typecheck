@@ -13,7 +13,6 @@ import main.ast.node.statement.*;
 import main.symbolTable.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class VisitorImpl implements Visitor {
@@ -35,20 +34,26 @@ public class VisitorImpl implements Visitor {
         return this.allSymbolTables.get(this.allSymbolTables.size() - 1);
     }
 
+    private void print(String str) {
+        System.out.println(str);
+    }
+
     @Override
     public void visit(Program program) {
         // init state
         this.varIndex = 0;
         this.lineNumber = 1;
 
+        if (this.passNumber == 2)
+            this.print(program.toString());
+
         // create main symbol table
         SymbolTable programSymbolTable = new SymbolTable("program");
         SymbolTable.push(programSymbolTable);
 
-        if (this.passNumber == 1) {
-            // added to the list of all symbol tables
+        // added to the list of all symbol tables
+        if (this.passNumber == 1)
             this.allSymbolTables.add(programSymbolTable);
-        }
 
         program.getClasses().forEach(m -> m.accept(this));
         program.getMainClass().accept(this);
@@ -77,14 +82,12 @@ public class VisitorImpl implements Visitor {
         SymbolTable classScope = new SymbolTable(className);
         SymbolTable.push(classScope); // add to stack
 
-        if (this.passNumber == 1) {
-            // added to the list of all symbol tables
+        // added to the list of all symbol tables
+        if (this.passNumber == 1)
             this.allSymbolTables.add(classScope);
-        }
 
-        // extend token care here
         if (this.passNumber == 2) {
-
+            // 1- extend token care here
             String parentName = classDeclaration.getParentName().getName();
             SymbolTable parentSymbolTable = this.findSymbolTable(parentName);
             SymbolTable currentSymbolTable = this.findSymbolTable(className);
@@ -111,6 +114,9 @@ public class VisitorImpl implements Visitor {
                 }
             }
 
+            // 2- pre-order
+            print(classDeclaration.toString());
+
         }
 
         classDeclaration.getMethodDeclarations().forEach(m -> m.accept(this));
@@ -122,9 +128,9 @@ public class VisitorImpl implements Visitor {
     }
 
     private SymbolTable findSymbolTable(String parentName) {
-        for (int i = 0; i < this.allSymbolTables.size(); i++)
-            if (this.allSymbolTables.get(i).getName().equals(parentName))
-                return this.allSymbolTables.get(i);
+        for (SymbolTable s: this.allSymbolTables)
+            if (s.getName().equals(parentName))
+                return s;
         return null;
     }
 
@@ -132,7 +138,9 @@ public class VisitorImpl implements Visitor {
     public void visit(MethodDeclaration n) {
         String methodName = n.getName().toString();
         ArrayList<Type> argTypes = new ArrayList<>();
-        n.getArgs().forEach(a -> argTypes.add(a.getType())); //todo: syntax might be wrong
+        for (VarDeclaration v: n.getArgs()) {
+            argTypes.add(v.getType());
+        }
 
         boolean error = true;
         do {
@@ -151,10 +159,12 @@ public class VisitorImpl implements Visitor {
         SymbolTable classScope = new SymbolTable(methodName);
         SymbolTable.push(classScope); // add to stack
 
-        if (this.passNumber == 1) {
-            // added to the list of all symbol tables
+        // added to the list of all symbol tables
+        if (this.passNumber == 1)
             this.allSymbolTables.add(classScope);
-        }
+
+        if (this.passNumber == 2)
+            this.print(n.toString());
 
         n.getBody().forEach(l -> l.accept(this));
         n.getName().accept(this);
@@ -166,7 +176,7 @@ public class VisitorImpl implements Visitor {
 
     @Override
     public void visit(VarDeclaration varDeclaration) {
-        String varName = varDeclaration.getIdentifier().getName(); //alpha
+        String varName = varDeclaration.getIdentifier().getName();
         Type type = varDeclaration.getType();
 
         boolean error = true;
@@ -184,83 +194,131 @@ public class VisitorImpl implements Visitor {
 
         this.varIndex++;
 
+        if (this.passNumber == 2)
+            this.print(varDeclaration.toString());
+
         varDeclaration.getIdentifier().accept(this);
     }
 
     @Override
     public void visit(ArrayCall arrayCall) {
-       arrayCall.getIndex().accept(this);
-       arrayCall.getInstance().accept(this);
+        if (this.passNumber == 2)
+            this.print(arrayCall.toString());
+
+        arrayCall.getIndex().accept(this);
+        arrayCall.getInstance().accept(this);
     }
 
     @Override
     public void visit(BinaryExpression binaryExpression) {
+        if (this.passNumber == 2)
+            this.print(binaryExpression.toString());
+
         binaryExpression.getLeft().accept(this);
         binaryExpression.getRight().accept(this);
     }
 
     @Override
     public void visit(Identifier identifier) {
+        if (this.passNumber == 2)
+            this.print(identifier.toString());
+
         identifier.accept(this);
     }
 
     @Override
     public void visit(Length length) {
+        if (this.passNumber == 2)
+            this.print(length.toString());
+
         length.getExpression().accept(this);
     }
 
     @Override
     public void visit(MethodCall methodCall) {
+        if (this.passNumber == 2)
+            this.print(methodCall.toString());
+
         methodCall.getArgs().forEach(m -> m.accept(this));
     }
 
     @Override
     public void visit(NewArray newArray) {
+        if (this.passNumber == 2)
+            this.print(newArray.toString());
+
         newArray.getExpression().accept(this);
     }
 
     @Override
     public void visit(NewClass newClass) {
+        if (this.passNumber == 2)
+            this.print(newClass.toString());
+
         newClass.getClassName().accept(this);
     }
 
     @Override
     public void visit(This instance) {
-       instance.accept(this);
+        if (this.passNumber == 2)
+            this.print(instance.toString());
+
+        instance.accept(this);
     }
 
     @Override
     public void visit(UnaryExpression unaryExpression) {
+        if (this.passNumber == 2)
+            this.print(unaryExpression.toString());
+
         unaryExpression.getValue().accept(this);
     }
 
     @Override
     public void visit(BooleanValue value) {
+        if (this.passNumber == 2)
+            this.print(value.toString());
+
         value.accept(this);
     }
 
     @Override
     public void visit(IntValue value) {
+        if (this.passNumber == 2)
+            this.print(value.toString());
+
         value.accept(this);
     }
 
     @Override
     public void visit(StringValue value) {
+        if (this.passNumber == 2)
+            this.print(value.toString());
+
         value.accept(this);
     }
 
     @Override
     public void visit(Assign assign) {
+        if (this.passNumber == 2)
+            this.print(assign.toString());
+
         assign.accept(this);
     }
 
     @Override
     public void visit(Block block) {
+        if (this.passNumber == 2)
+            this.print(block.toString());
+
         block.getBody().forEach(b -> b.accept(this));
     }
 
     @Override
     public void visit(Conditional conditional) {
+        if (this.passNumber == 2)
+            this.print(conditional.toString());
+
         conditional.getAlternativeBody().accept(this);
         conditional.getConsequenceBody().accept(this);
         conditional.getExpression().accept(this);
@@ -268,12 +326,18 @@ public class VisitorImpl implements Visitor {
 
     @Override
     public void visit(While loop) {
+        if (this.passNumber == 2)
+            this.print(loop.toString());
+
         loop.getBody().accept(this);
         loop.getCondition().accept(this);
     }
 
     @Override
     public void visit(Write write) {
+        if (this.passNumber == 2)
+            this.print(write.toString());
+
        write.accept(this);
     }
 }
