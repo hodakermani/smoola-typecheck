@@ -84,25 +84,32 @@ public class VisitorImpl implements Visitor {
 
         // extend token care here
         if (this.passNumber == 2) {
-            // fixme: the case when class of parentName has changed names this will not work
 
             String parentName = classDeclaration.getParentName().getName();
             SymbolTable parentSymbolTable = this.findSymbolTable(parentName);
             SymbolTable currentSymbolTable = this.findSymbolTable(className);
 
-
-
+            // add parent symbol table items in the child symbol table
             for (Map.Entry<String, SymbolTableItem> entry : parentSymbolTable.getItems().entrySet()) {
                 try {
                     currentSymbolTable.get(entry.getKey());
                 } catch (ItemNotFoundException e) {
                     // the child symbol table did not contain the parent's element
-                    //todo
+                    // add items from the parent to the child
+                    error = true;
+                    String varName = entry.getKey();
+                    do {
+                        try {
+                            // create symbol table item
+                            SymbolTable.getCurrentSymbolTable().put(entry.getValue());
+                            error = false;
+                        } catch (ItemAlreadyExistsException ex) {
+                            System.out.println("Line:" + this.lineNumber + ":Redefinition of variable " + varName);
+                            varName = "Temporary_" + varName + "_1";
+                        }
+                    } while(error);
                 }
             }
-
-
-            // todo:edit symbol table in this.allSymbolTables
 
         }
 
@@ -125,7 +132,7 @@ public class VisitorImpl implements Visitor {
     public void visit(MethodDeclaration n) {
         String methodName = n.getName().toString();
         ArrayList<Type> argTypes = new ArrayList<>();
-        n.getArgs().forEach(a -> argTypes.add(a.getType())); //todo: might be wrong way
+        n.getArgs().forEach(a -> argTypes.add(a.getType())); //todo: syntax might be wrong
 
         boolean error = true;
         do {
