@@ -23,7 +23,7 @@ grammar Smoola;
          visitor.setPassNumber(1);
          visitor.visit(program);
          visitor.setPassNumber(2);
-       ;}
+       }
    ;
     mainClass returns [ClassDeclaration clasDeclaration] :
         // name should be checked later

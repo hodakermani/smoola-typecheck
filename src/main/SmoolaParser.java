@@ -201,7 +201,6 @@ public class SmoolaParser extends Parser {
 
 	public static class MainClassContext extends ParserRuleContext {
 		public ClassDeclaration clasDeclaration;
-		public Token id;
 		public Token ID;
 		public StatementsContext s;
 		public ExpressionContext ex;
@@ -238,8 +237,8 @@ public class SmoolaParser extends Parser {
 			setState(80);
 			match(T__0);
 			setState(81);
-			((MainClassContext)_localctx).id = match(ID);
-			ClassDeclaration clasDeclaration = new ClassDeclaration(((MainClassContext)_localctx).id);
+			((MainClassContext)_localctx).ID = match(ID);
+			ClassDeclaration clasDeclaration = new ClassDeclaration(((MainClassContext)_localctx).ID);
 			setState(83);
 			match(T__1);
 			setState(84);
