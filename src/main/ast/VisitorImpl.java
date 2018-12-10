@@ -55,8 +55,8 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 1)
             this.allSymbolTables.add(programSymbolTable);
 
-        program.getClasses().forEach(m -> m.accept(this));
-        program.getMainClass().accept(this);
+        visit(program.getMainClass());
+        program.getClasses().forEach(m -> visit(m));
 
         SymbolTable.pop();
     }
@@ -119,10 +119,10 @@ public class VisitorImpl implements Visitor {
 
         }
 
-        classDeclaration.getMethodDeclarations().forEach(m -> m.accept(this));
-        classDeclaration.getName().accept(this);
-        classDeclaration.getParentName().accept(this);
-        classDeclaration.getVarDeclarations().forEach(v -> v.accept(this));
+        visit(classDeclaration.getName());
+        visit(classDeclaration.getParentName());
+        classDeclaration.getVarDeclarations().forEach(v -> visit(v));
+        classDeclaration.getMethodDeclarations().forEach(m -> visit(m));
 
         SymbolTable.pop();
     }
@@ -166,10 +166,10 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(n.toString());
 
+        visit(n.getName());
+        n.getArgs().forEach(p -> visit(p));
         n.getBody().forEach(l -> l.accept(this));
-        n.getName().accept(this);
-        n.getArgs().forEach(p -> p.accept(this));
-        n.getLocalVars().forEach(v -> v.accept(this));
+        n.getLocalVars().forEach(v -> visit(v));
 
         SymbolTable.pop();
     }
@@ -197,7 +197,7 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(varDeclaration.toString());
 
-        varDeclaration.getIdentifier().accept(this);
+        visit(varDeclaration.getIdentifier());
     }
 
     @Override
@@ -222,8 +222,6 @@ public class VisitorImpl implements Visitor {
     public void visit(Identifier identifier) {
         if (this.passNumber == 2)
             this.print(identifier.toString());
-
-        identifier.accept(this);
     }
 
     @Override
@@ -255,7 +253,7 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(newClass.toString());
 
-        newClass.getClassName().accept(this);
+//        newClass.getClassName().accept(this);
     }
 
     @Override
@@ -263,7 +261,7 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(instance.toString());
 
-        instance.accept(this);
+//        instance.accept(this);
     }
 
     @Override
@@ -279,7 +277,7 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(value.toString());
 
-        value.accept(this);
+//        value.accept(this);
     }
 
     @Override
@@ -287,7 +285,7 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(value.toString());
 
-        value.accept(this);
+//        value.accept(this);
     }
 
     @Override
@@ -295,7 +293,7 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(value.toString());
 
-        value.accept(this);
+//        value.accept(this);
     }
 
     @Override
@@ -303,7 +301,8 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(assign.toString());
 
-        assign.accept(this);
+        assign.getlValue().accept(this);
+        assign.getrValue().accept(this);
     }
 
     @Override
@@ -319,9 +318,9 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(conditional.toString());
 
-        conditional.getAlternativeBody().accept(this);
-        conditional.getConsequenceBody().accept(this);
         conditional.getExpression().accept(this);
+        conditional.getConsequenceBody().accept(this);
+        conditional.getAlternativeBody().accept(this);
     }
 
     @Override
@@ -329,8 +328,8 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(loop.toString());
 
-        loop.getBody().accept(this);
         loop.getCondition().accept(this);
+        loop.getBody().accept(this);
     }
 
     @Override
@@ -338,6 +337,6 @@ public class VisitorImpl implements Visitor {
         if (this.passNumber == 2)
             this.print(write.toString());
 
-       write.accept(this);
+       write.getArg().accept(this);
     }
 }
