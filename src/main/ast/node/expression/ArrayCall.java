@@ -1,14 +1,11 @@
 package main.ast.node.expression;
 
-import main.ast.Visitor;
+import main.visitor.Visitor;
 
 public class ArrayCall extends Expression {
     private Expression instance;
     private Expression index;
 
-
-    public ArrayCall() {
-    }
     public ArrayCall(Expression instance, Expression index) {
         this.instance = instance;
         this.index = index;
@@ -34,7 +31,7 @@ public class ArrayCall extends Expression {
     public String toString() {
         return "ArrayCall";
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

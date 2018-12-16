@@ -1,7 +1,7 @@
 package main.ast.node.expression.Value;
 
 import main.ast.Type.Type;
-import main.ast.Visitor;
+import main.visitor.Visitor;
 
 public class StringValue extends Value {
     private String constant;
@@ -23,7 +23,7 @@ public class StringValue extends Value {
     public String toString() {
         return "StringValue " + constant;
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

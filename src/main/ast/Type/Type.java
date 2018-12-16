@@ -1,5 +1,7 @@
 package main.ast.Type;
 
-public abstract class Type {
+import main.ast.node.Node;
+
+public abstract class Type extends Node {
     public abstract String toString();
 }

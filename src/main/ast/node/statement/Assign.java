@@ -1,6 +1,6 @@
 package main.ast.node.statement;
 
-import main.ast.Visitor;
+import main.visitor.Visitor;
 import main.ast.node.expression.Expression;
 
 public class Assign extends Statement {
@@ -11,7 +11,6 @@ public class Assign extends Statement {
         this.lValue = lValue;
         this.rValue = rValue;
     }
-    public Assign() { }
 
     public Expression getlValue() {
         return lValue;
@@ -33,7 +32,7 @@ public class Assign extends Statement {
     public String toString() {
         return "Assign";
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

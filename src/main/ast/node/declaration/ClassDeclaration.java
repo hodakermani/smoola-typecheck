@@ -1,6 +1,6 @@
 package main.ast.node.declaration;
 
-import main.ast.Visitor;
+import main.visitor.Visitor;
 import main.ast.node.expression.Identifier;
 
 import java.util.ArrayList;
@@ -14,13 +14,6 @@ public class ClassDeclaration extends Declaration{
     public ClassDeclaration(Identifier name, Identifier parentName) {
         this.name = name;
         this.parentName = parentName;
-    }
-    public ClassDeclaration(Identifier name) {
-        this.name = name;
-
-    }
-    public ClassDeclaration() {
-
     }
 
     public Identifier getName() {
@@ -59,7 +52,7 @@ public class ClassDeclaration extends Declaration{
     public String toString() {
         return "ClassDeclaration";
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

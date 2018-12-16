@@ -1,7 +1,7 @@
 package main.ast.node.declaration;
 
 import main.ast.Type.Type;
-import main.ast.Visitor;
+import main.visitor.Visitor;
 import main.ast.node.expression.Expression;
 import main.ast.node.expression.Identifier;
 import main.ast.node.statement.Statement;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class MethodDeclaration extends Declaration {
     private Expression returnValue;
-    private Type returnType;
+    private Type actualReturnType;
     private Identifier name;
     private ArrayList<VarDeclaration> args = new ArrayList<>();
     private ArrayList<VarDeclaration> localVars = new ArrayList<>();
@@ -26,14 +26,6 @@ public class MethodDeclaration extends Declaration {
 
     public void setReturnValue(Expression returnValue) {
         this.returnValue = returnValue;
-    }
-
-    public Type getReturnType() {
-        return returnType;
-    }
-
-    public void setReturnType(Type returnType) {
-        this.returnType = returnType;
     }
 
     public Identifier getName() {
@@ -72,8 +64,16 @@ public class MethodDeclaration extends Declaration {
     public String toString() {
         return "MethodDeclaration";
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
+    }
+
+    public Type getActualReturnType() {
+        return actualReturnType;
+    }
+
+    public void setActualReturnType(Type actualReturnType) {
+        this.actualReturnType = actualReturnType;
     }
 }

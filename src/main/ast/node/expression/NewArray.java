@@ -1,6 +1,6 @@
 package main.ast.node.expression;
 
-import main.ast.Visitor;
+import main.visitor.Visitor;
 
 public class NewArray extends Expression {
     private Expression expression;
@@ -17,7 +17,7 @@ public class NewArray extends Expression {
     public String toString() {
         return "NewArray";
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

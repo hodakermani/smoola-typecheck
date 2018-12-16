@@ -1,10 +1,11 @@
 package main.ast.node.statement;
 
-import main.ast.Visitor;
+import main.visitor.Visitor;
 
 import java.util.ArrayList;
 
-public class Block extends Statement {
+public class Block extends Statement
+{
     private ArrayList<Statement> body = new ArrayList<>();
 
     public ArrayList<Statement> getBody() {
@@ -19,7 +20,7 @@ public class Block extends Statement {
     public String toString() {
         return "Block";
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

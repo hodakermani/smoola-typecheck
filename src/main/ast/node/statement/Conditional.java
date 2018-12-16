@@ -1,13 +1,12 @@
 package main.ast.node.statement;
 
-import main.ast.Visitor;
+import main.visitor.Visitor;
 import main.ast.node.expression.Expression;
 
 public class Conditional extends Statement {
     private Expression expression;
     private Statement consequenceBody;
     private Statement alternativeBody;
-    public Conditional() {}
 
     public Conditional(Expression expression, Statement consequenceBody) {
         this.expression = expression;
@@ -42,7 +41,7 @@ public class Conditional extends Statement {
     public String toString() {
         return "Conditional";
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

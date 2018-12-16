@@ -1,6 +1,6 @@
 package main.ast.node.expression;
 
-import main.ast.Visitor;
+import main.visitor.Visitor;
 
 public class UnaryExpression extends Expression {
 
@@ -10,8 +10,6 @@ public class UnaryExpression extends Expression {
     public UnaryExpression(UnaryOperator unaryOperator, Expression value) {
         this.unaryOperator = unaryOperator;
         this.value = value;
-    }
-    public UnaryExpression() {
     }
 
     public Expression getValue() {
@@ -34,7 +32,7 @@ public class UnaryExpression extends Expression {
     public String toString() {
         return "UnaryExpression " + unaryOperator.name();
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

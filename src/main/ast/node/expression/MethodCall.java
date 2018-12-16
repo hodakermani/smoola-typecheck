@@ -1,7 +1,6 @@
 package main.ast.node.expression;
 
-import main.ast.Type.Type;
-import main.ast.Visitor;
+import main.visitor.Visitor;
 
 import java.util.ArrayList;
 
@@ -12,9 +11,6 @@ public class MethodCall extends Expression {
     public MethodCall(Expression instance, Identifier methodName) {
         this.instance = instance;
         this.methodName = methodName;
-    }
-
-    public MethodCall() {
     }
 
     private ArrayList<Expression> args = new ArrayList<>();
@@ -47,7 +43,7 @@ public class MethodCall extends Expression {
     public String toString() {
         return "MethodCall";
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

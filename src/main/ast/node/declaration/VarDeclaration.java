@@ -1,7 +1,7 @@
 package main.ast.node.declaration;
 
 import main.ast.Type.Type;
-import main.ast.Visitor;
+import main.visitor.Visitor;
 import main.ast.node.expression.Identifier;
 
 public class VarDeclaration extends Declaration {
@@ -11,12 +11,6 @@ public class VarDeclaration extends Declaration {
     public VarDeclaration(Identifier identifier, Type type) {
         this.identifier = identifier;
         this.type = type;
-    }
-    public VarDeclaration(Identifier identifier) {
-        this.identifier = identifier;
-    }
-
-    public VarDeclaration() {
     }
 
     public Identifier getIdentifier() {
@@ -39,7 +33,7 @@ public class VarDeclaration extends Declaration {
     public String toString() {
         return "VarDeclaration";
     }
-    @Override
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

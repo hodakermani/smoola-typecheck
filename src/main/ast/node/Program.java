@@ -1,8 +1,10 @@
 package main.ast.node;
 
-import main.ast.Visitor;
-import java.util.ArrayList;
+import main.visitor.Visitor;
 import main.ast.node.declaration.ClassDeclaration;
+
+//import java.lang.instrument.ClassDeclaration;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Program {
@@ -33,4 +35,5 @@ public class Program {
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
+
 }

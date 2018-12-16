@@ -1,8 +1,24 @@
 package main.ast.node;
 
-import main.ast.Visitor;
-
 public abstract class Node {
+    protected int lineNum;
+    protected int colNum;
+    public boolean typeCorrect;
+    public String selfType;
 
-    public void accept(Visitor visitor) {}
+    public int getColNum() {
+        return colNum;
+    }
+
+    public void setColNum(int colNum) {
+        this.colNum = colNum;
+    }
+
+    public int getLineNum() {
+        return lineNum;
+    }
+
+    public void setLineNum(int lineNum) {
+        this.lineNum = lineNum;
+    }
 }
