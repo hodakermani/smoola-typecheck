@@ -234,7 +234,6 @@ grammar Smoola;
 		lOrExpr=expressionOr assign='=' rAssignExpr=expressionAssignment
 		{
 		    $assignRetExpr = new BinaryExpression( $lOrExpr.orExpr , $rAssignExpr.assignRetExpr, BinaryOperator.assign, $lOrExpr.orExpr.getType() );
-            print($assignRetExpr.getLeft());
 		    setPosition( $assignRetExpr , $assign.getLine() , $assign.getCharPositionInLine() );
 		}
 	    |	singleOrExpr=expressionOr

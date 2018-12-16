@@ -1,6 +1,7 @@
 package main.visitor.nameAnalyzer;
 
 
+import main.ast.Type.Type;
 import main.ast.node.Node;
 import main.ast.node.Program;
 import main.ast.node.declaration.ClassDeclaration;
@@ -13,6 +14,7 @@ import main.ast.node.expression.Value.IntValue;
 import main.ast.node.expression.Value.StringValue;
 import main.ast.node.statement.*;
 import main.symbolTable.ClassSymbolTableItem;
+import main.symbolTable.SymbolTableItem;
 import main.symbolTable.itemException.ItemNotFoundException;
 import main.symbolTable.SymbolTable;
 import main.symbolTable.SymbolTableMethodItem;
@@ -31,138 +33,121 @@ public class NameAnalyser extends VisitorImpl {
     private SymbolTableClassParentLinker symTableClassLinker;
     private ArrayList<String> nameErrors;
     private int lastIndexOfVariable;
-    public NameAnalyser()
-    {
+
+    public NameAnalyser() {
         symConstructor = new SymbolTableConstructor();
         symTableClassLinker = new SymbolTableClassParentLinker();
         nameErrors = new ArrayList<>();
         lastIndexOfVariable = 0;
-        setState( TraverseState.symbolTableConstruction );
-    }
-    public int numOfErrors()
-    {
-        return nameErrors.size();
-    }
-    private void switchState()
-    {
-        if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) )
-            setState( TraverseState.redefinitionAndArrayErrorCatching );
-        else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) && nameErrors.size() != 0 )
-            setState( TraverseState.PrintError );
-        else
-            setState( TraverseState.Exit );
+        setState(TraverseState.symbolTableConstruction);
     }
 
-    private void setState( TraverseState traverseState )
-    {
+    public int numOfErrors() {
+        return nameErrors.size();
+    }
+
+    private void switchState() {
+        if (traverseState.name().equals(TraverseState.symbolTableConstruction.toString()))
+            setState(TraverseState.redefinitionAndArrayErrorCatching);
+        else if (traverseState.name().equals(TraverseState.redefinitionAndArrayErrorCatching.toString()) && nameErrors.size() != 0)
+            setState(TraverseState.PrintError);
+        else
+            setState(TraverseState.Exit);
+    }
+
+    private void setState(TraverseState traverseState) {
         this.traverseState = traverseState;
     }
 
-    private void checkForPropertyRedefinition( ClassDeclaration classDeclaration )
-    {
+    private void checkForPropertyRedefinition(ClassDeclaration classDeclaration) {
         String name = classDeclaration.getName().getName();
-        if( name.indexOf( '$' ) != -1 )
-            nameErrors.add( "Line:" + classDeclaration.getName().getLineNum() + ":Redefinition of class " + name.substring( name.indexOf( '$' ) + 1 ) );
-        try
-        {
-            ClassSymbolTableItem classItem = ( ClassSymbolTableItem ) SymbolTable.root.getInCurrentScope(ClassSymbolTableItem.CLASS + name );
+        if (name.indexOf('$') != -1)
+            nameErrors.add("Line:" + classDeclaration.getName().getLineNum() + ":Redefinition of class " + name.substring(name.indexOf('$') + 1));
+        try {
+            ClassSymbolTableItem classItem = (ClassSymbolTableItem) SymbolTable.root.getInCurrentScope(ClassSymbolTableItem.CLASS + name);
             SymbolTable next = classItem.getClassSym();
-            SymbolTable.push( next );
-        }
-        catch( ItemNotFoundException itemNotFound )
-        {
-            System.out.println( "there is an error in pushing class symbol table" );
+            SymbolTable.push(next);
+        } catch (ItemNotFoundException itemNotFound) {
+            System.out.println("there is an error in pushing class symbol table");
         }
     }
-    private void checkForPropertyRedefinitionInParentScopes( VarDeclaration varDeclaration )
-    {
+
+    private void checkForPropertyRedefinitionInParentScopes(VarDeclaration varDeclaration) {
         String name = varDeclaration.getIdentifier().getName();
         Set<SymbolTable> visitedSymbolTables = new HashSet<>();
         String variableKey = SymbolTableVariableItemBase.VARIABLE + name;
         SymbolTable current = SymbolTable.top.getPreSymbolTable();
-        visitedSymbolTables.add( SymbolTable.top );
-        while( current != null &&  !visitedSymbolTables.contains( current ) )
-        {
-            visitedSymbolTables.add( current );
+        visitedSymbolTables.add(SymbolTable.top);
+        while (current != null && !visitedSymbolTables.contains(current)) {
+            visitedSymbolTables.add(current);
             try {
-                current.getInCurrentScope( variableKey );
+                current.getInCurrentScope(variableKey);
                 SymbolTableVariableItemBase variable = (SymbolTableVariableItemBase) SymbolTable.top.getInCurrentScope(variableKey);
-                variable.setName( "$" + variable.getName() );
-                SymbolTable.top.updateItemInCurrentScope( variableKey , variable );
-                nameErrors.add("Line:" + varDeclaration.getIdentifier().getLineNum() + ":Redefinition of variable " + name.substring(name.indexOf('$') + 1) );
+                variable.setName("$" + variable.getName());
+                SymbolTable.top.updateItemInCurrentScope(variableKey, variable);
+                nameErrors.add("Line:" + varDeclaration.getIdentifier().getLineNum() + ":Redefinition of variable " + name.substring(name.indexOf('$') + 1));
                 return;
-            }
-            catch( ItemNotFoundException itemNotFound )
-            {
+            } catch (ItemNotFoundException itemNotFound) {
                 current = current.getPreSymbolTable();
             }
         }
     }
-    private void checkForPropertyRedefinition( VarDeclaration varDeclaration )
-    {
+
+    private void checkForPropertyRedefinition(VarDeclaration varDeclaration) {
         String name = varDeclaration.getIdentifier().getName();
-        if( name.indexOf( '$' ) != -1 ) {
-            nameErrors.add("Line:" + varDeclaration.getIdentifier().getLineNum() + ":Redefinition of variable " + name.substring(name.indexOf('$') + 1) );
+        if (name.indexOf('$') != -1) {
+            nameErrors.add("Line:" + varDeclaration.getIdentifier().getLineNum() + ":Redefinition of variable " + name.substring(name.indexOf('$') + 1));
             return;
         }
         try {
-            SymbolTableVariableItemBase varItem = ( SymbolTableVariableItemBase) SymbolTable.top.getInCurrentScope( SymbolTableVariableItemBase.VARIABLE + name );
-            varItem.setIndex( lastIndexOfVariable++ );
-            SymbolTable.top.updateItemInCurrentScope( SymbolTableVariableItemBase.VARIABLE + name , varItem );
-            if( varItem instanceof SymbolTableFieldVariableItem )
+            SymbolTableVariableItemBase varItem = (SymbolTableVariableItemBase) SymbolTable.top.getInCurrentScope(SymbolTableVariableItemBase.VARIABLE + name);
+            varItem.setIndex(lastIndexOfVariable++);
+            SymbolTable.top.updateItemInCurrentScope(SymbolTableVariableItemBase.VARIABLE + name, varItem);
+            if (varItem instanceof SymbolTableFieldVariableItem)
                 checkForPropertyRedefinitionInParentScopes(varDeclaration);
-        }
-        catch( ItemNotFoundException itemNotFound )
-        {
-            System.out.println( "not important" );
+        } catch (ItemNotFoundException itemNotFound) {
+            System.out.println("not important");
         }
     }
 
-    private void checkForPropertyRedefinitionInParentScope( MethodDeclaration methodDeclaration )
-    {
+    private void checkForPropertyRedefinitionInParentScope(MethodDeclaration methodDeclaration) {
         String name = methodDeclaration.getName().getName();
         String methodKey = SymbolTableMethodItem.METHOD + name;
         SymbolTable current = SymbolTable.top.getPreSymbolTable();
         Set<SymbolTable> visitedSymbolTables = new HashSet<>();
-        visitedSymbolTables.add( SymbolTable.top );
-        while( current != null && !visitedSymbolTables.contains( current ) )
-        {
-            visitedSymbolTables.add( current );
+        visitedSymbolTables.add(SymbolTable.top);
+        while (current != null && !visitedSymbolTables.contains(current)) {
+            visitedSymbolTables.add(current);
             try {
-                current.getInCurrentScope( methodKey );
+                current.getInCurrentScope(methodKey);
                 SymbolTableMethodItem method = (SymbolTableMethodItem) SymbolTable.top.getInCurrentScope(methodKey);
-                method.setName( "$" + method.getName() );
-                SymbolTable.top.updateItemInCurrentScope( methodKey , method );
-                nameErrors.add("Line:" + methodDeclaration.getName().getLineNum() + ":Redefinition of method " + name.substring(name.indexOf('$') + 1) );
+                method.setName("$" + method.getName());
+                SymbolTable.top.updateItemInCurrentScope(methodKey, method);
+                nameErrors.add("Line:" + methodDeclaration.getName().getLineNum() + ":Redefinition of method " + name.substring(name.indexOf('$') + 1));
                 return;
-            }
-            catch( ItemNotFoundException itemNotFound )
-            {
+            } catch (ItemNotFoundException itemNotFound) {
                 current = current.getPreSymbolTable();
             }
         }
     }
-    private void checkForPropertyRedefinition( MethodDeclaration methodDeclaration )
-    {
+
+    private void checkForPropertyRedefinition(MethodDeclaration methodDeclaration) {
         String name = methodDeclaration.getName().getName();
         SymbolTable next = null;
         String methodKey = SymbolTableMethodItem.METHOD + name;
-        try
-        {
-            next = (( SymbolTableMethodItem )SymbolTable.top.getInCurrentScope( methodKey ) ).getMethodSymbolTable();
-        }
-        catch( ItemNotFoundException itemNotFound )
-        {
-            System.out.println( "an error occurred in pushing method symbol table" );
+        try {
+            next = ((SymbolTableMethodItem) SymbolTable.top.getInCurrentScope(methodKey)).getMethodSymbolTable();
+        } catch (ItemNotFoundException itemNotFound) {
+            System.out.println("an error occurred in pushing method symbol table");
             return;
         }
-        if( name.indexOf( '$' ) != -1 ) {
-            nameErrors.add("Line:" + methodDeclaration.getName().getLineNum() + ":Redefinition of method " + name.substring(name.indexOf('$') + 1) );
-            SymbolTable.push( next );
+        if (name.indexOf('$') != -1) {
+            nameErrors.add("Line:" + methodDeclaration.getName().getLineNum() + ":Redefinition of method " + name.substring(name.indexOf('$') + 1));
+            SymbolTable.push(next);
             return;
         }
-        checkForPropertyRedefinitionInParentScope( methodDeclaration );
-        SymbolTable.push( next );
+        checkForPropertyRedefinitionInParentScope(methodDeclaration);
+        SymbolTable.push(next);
     }
 
     @Override
@@ -171,14 +156,14 @@ public class NameAnalyser extends VisitorImpl {
     }
 
     @Override
-    public void visit(Program program){
+    public void visit(Program program) {
         //TODO: implement appropriate visit functionality
-        while( !traverseState.toString().equals( TraverseState.Exit.toString() )) {
+        while (!traverseState.toString().equals(TraverseState.Exit.toString())) {
             if (traverseState.name().equals(TraverseState.symbolTableConstruction.toString()))
                 symConstructor.constructProgramSym();
             else if (traverseState.name().equals(TraverseState.redefinitionAndArrayErrorCatching.toString()))
                 symTableClassLinker.findClassesParents(program);
-            else if( traverseState.name().equals( TraverseState.PrintError.toString() ) ) {
+            else if (traverseState.name().equals(TraverseState.PrintError.toString())) {
                 for (String error : nameErrors)
                     System.out.println(error);
                 return;
@@ -193,82 +178,80 @@ public class NameAnalyser extends VisitorImpl {
     @Override
     public void visit(ClassDeclaration classDeclaration) {
         //TODO: implement appropriate visit functionality
-        if( classDeclaration == null )
+        if (classDeclaration == null)
             return;
-        if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) )
-            symConstructor.construct( classDeclaration );
-        else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
-            checkForPropertyRedefinition( classDeclaration );
-        visitExpr( classDeclaration.getName() );
-        visitExpr( classDeclaration.getParentName() );
-        for( VarDeclaration varDeclaration: classDeclaration.getVarDeclarations() )
-            this.visit( varDeclaration );
-        for( MethodDeclaration methodDeclaration: classDeclaration.getMethodDeclarations() )
-            this.visit( methodDeclaration );
+        if (traverseState.name().equals(TraverseState.symbolTableConstruction.toString()))
+            symConstructor.construct(classDeclaration);
+        else if (traverseState.name().equals(TraverseState.redefinitionAndArrayErrorCatching.toString()))
+            checkForPropertyRedefinition(classDeclaration);
+        visitExpr(classDeclaration.getName());
+        visitExpr(classDeclaration.getParentName());
+        for (VarDeclaration varDeclaration : classDeclaration.getVarDeclarations())
+            this.visit(varDeclaration);
+        for (MethodDeclaration methodDeclaration : classDeclaration.getMethodDeclarations())
+            this.visit(methodDeclaration);
         SymbolTable.pop();
     }
 
     @Override
     public void visit(MethodDeclaration methodDeclaration) {
         //TODO: implement appropriate visit functionality
-        if( methodDeclaration == null )
+        if (methodDeclaration == null)
             return;
-
-        System.out.println("return type: " + methodDeclaration.getReturnValue());
-
-        if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) )
-            symConstructor.construct( methodDeclaration );
-        else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
-            checkForPropertyRedefinition( methodDeclaration );
-        for( VarDeclaration argDeclaration: methodDeclaration.getArgs() )
-            visit( argDeclaration );
-        for( VarDeclaration localVariable: methodDeclaration.getLocalVars() )
-            this.visit( localVariable );
-        for( Statement statement : methodDeclaration.getBody() )
-            visitStatement( statement );
-        visitExpr( methodDeclaration.getReturnValue() );
+        if (traverseState.name().equals(TraverseState.symbolTableConstruction.toString()))
+            symConstructor.construct(methodDeclaration);
+        else if (traverseState.name().equals(TraverseState.redefinitionAndArrayErrorCatching.toString()))
+            checkForPropertyRedefinition(methodDeclaration);
+        for (VarDeclaration argDeclaration : methodDeclaration.getArgs())
+            visit(argDeclaration);
+        for (VarDeclaration localVariable : methodDeclaration.getLocalVars())
+            this.visit(localVariable);
+        for (Statement statement : methodDeclaration.getBody())
+            visitStatement(statement);
+        visitExpr(methodDeclaration.getReturnValue());
         SymbolTable.pop();
     }
 
     @Override
     public void visit(MainMethodDeclaration mainMethodDeclaration) {
         //TODO: implement appropriate visit functionality
-        if( mainMethodDeclaration == null )
+        if (mainMethodDeclaration == null)
             return;
-        if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) )
-            visit( ( MethodDeclaration ) mainMethodDeclaration );
-        else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString()) )
-            visit( ( MethodDeclaration ) mainMethodDeclaration );
-        for( Statement statement : mainMethodDeclaration.getBody() )
-            visitStatement( statement );
-        visitExpr( mainMethodDeclaration.getReturnValue() );
+        if (traverseState.name().equals(TraverseState.symbolTableConstruction.toString()))
+            visit((MethodDeclaration) mainMethodDeclaration);
+        else if (traverseState.name().equals(TraverseState.redefinitionAndArrayErrorCatching.toString()))
+            visit((MethodDeclaration) mainMethodDeclaration);
+        for (Statement statement : mainMethodDeclaration.getBody())
+            visitStatement(statement);
+        visitExpr(mainMethodDeclaration.getReturnValue());
     }
 
     @Override
     public void visit(VarDeclaration varDeclaration) {
         //TODO: implement appropriate visit functionality
-        if( varDeclaration == null )
+        if (varDeclaration == null)
             return;
 
-        System.out.println("var type is:" + varDeclaration.getType());
+        // how to get types
+//        System.out.println("this is identifier's type");
+//        System.out.println(this.getIdentifierType(varDeclaration.getIdentifier()).toString());
 
-        if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
-            checkForPropertyRedefinition( varDeclaration );
-        visitExpr( varDeclaration.getIdentifier() );
+        if (traverseState.name().equals(TraverseState.redefinitionAndArrayErrorCatching.toString()))
+            checkForPropertyRedefinition(varDeclaration);
+        visitExpr(varDeclaration.getIdentifier());
     }
 
     @Override
     public void visit(ArrayCall arrayCall) {
         //TODO: implement appropriate visit functionality
-        if( arrayCall == null )
+        if (arrayCall == null)
             return;
         try {
-            visitExpr( arrayCall.getInstance() );
-            visitExpr( arrayCall.getIndex() );
-        }
-        catch( NullPointerException npe )
+            visitExpr(arrayCall.getInstance());
+            visitExpr(arrayCall.getIndex());
+        } catch (NullPointerException npe)
         {
-            System.out.println( "instance or index is null" );
+            System.out.println("instance or index is null");
         }
 
     }
@@ -276,47 +259,42 @@ public class NameAnalyser extends VisitorImpl {
     @Override
     public void visit(BinaryExpression binaryExpression) {
         //TODO: implement appropriate visit functionality
-        if( binaryExpression == null )
+        if (binaryExpression == null)
             return;
         Expression lOperand = binaryExpression.getLeft();
         Expression rOperand = binaryExpression.getRight();
         try {
             visitExpr(lOperand);
             visitExpr(rOperand);
-        }
-        catch( NullPointerException npe )
-        {
-            System.out.println( "one of operands is null, there is a syntax error" );
+        } catch (NullPointerException npe) {
+            System.out.println("one of operands is null, there is a syntax error");
         }
     }
 
     @Override
     public void visit(Identifier identifier) {
         //TODO: implement appropriate visit functionality
-
     }
 
     @Override
     public void visit(Length length) {
         //TODO: implement appropriate visit functionality
-        if( length == null )
+        if (length == null)
             return;
-        visitExpr( length.getExpression() );
+        visitExpr(length.getExpression());
     }
 
     @Override
     public void visit(MethodCall methodCall) {
-        if( methodCall == null )
+        if (methodCall == null)
             return;
         try {
             visitExpr(methodCall.getInstance());
             visitExpr(methodCall.getMethodName());
             for (Expression argument : methodCall.getArgs())
                 visitExpr(argument);
-        }
-        catch( NullPointerException npe )
-        {
-            System.out.println( "syntax error occurred" );
+        } catch (NullPointerException npe) {
+            System.out.println("syntax error occurred");
         }
         //TODO: implement appropriate visit functionality
     }
@@ -324,23 +302,22 @@ public class NameAnalyser extends VisitorImpl {
     @Override
     public void visit(NewArray newArray) {
         //TODO: implement appropriate visit functionality
-        if( newArray == null )
+        if (newArray == null)
             return;
-        if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
-            if( newArray.getExpression() instanceof IntValue && ((IntValue) newArray.getExpression()).getConstant() <= 0 )
-            {
-                nameErrors.add( "Line:" + newArray.getExpression().getLineNum() + ":Array length should not be zero or negative" );
-                ((IntValue) newArray.getExpression()).setConstant( 0 );
+        if (traverseState.name().equals(TraverseState.redefinitionAndArrayErrorCatching.toString()))
+            if (newArray.getExpression() instanceof IntValue && ((IntValue) newArray.getExpression()).getConstant() <= 0) {
+                nameErrors.add("Line:" + newArray.getExpression().getLineNum() + ":Array length should not be zero or negative");
+                ((IntValue) newArray.getExpression()).setConstant(0);
             }
-        visitExpr( newArray.getExpression() );
+        visitExpr(newArray.getExpression());
     }
 
     @Override
     public void visit(NewClass newClass) {
         //TODO: implement appropriate visit functionality
-        if( newClass == null )
+        if (newClass == null)
             return;
-        visitExpr( newClass.getClassName() );
+        visitExpr(newClass.getClassName());
     }
 
     @Override
@@ -351,14 +328,12 @@ public class NameAnalyser extends VisitorImpl {
     @Override
     public void visit(UnaryExpression unaryExpression) {
         //TODO: implement appropriate visit functionality
-        if( unaryExpression == null )
+        if (unaryExpression == null)
             return;
         try {
             visitExpr(unaryExpression.getValue());
-        }
-        catch( NullPointerException npe )
-        {
-            System.out.println( "unary value is null" );
+        } catch (NullPointerException npe) {
+            System.out.println("unary value is null");
         }
     }
 
@@ -380,7 +355,7 @@ public class NameAnalyser extends VisitorImpl {
     @Override
     public void visit(Assign assign) {
         //TODO: implement appropriate visit functionality
-        if( assign == null )
+        if (assign == null)
             return;
         try {
             Expression lExpr = assign.getlValue();
@@ -389,46 +364,73 @@ public class NameAnalyser extends VisitorImpl {
             if (rValExpr != null)
                 visitExpr(rValExpr);
         }
-        catch( NullPointerException npe )
+        catch (NullPointerException npe)
         {
-            System.out.println( "lvalue expression is null" );
+            System.out.println("lvalue expression is null");
         }
     }
 
     @Override
     public void visit(Block block) {
         //TODO: implement appropriate visit functionality
-        if( block == null )
+        if (block == null)
             return;
-        for( Statement blockStat : block.getBody() )
-            this.visitStatement( blockStat );
+        for (Statement blockStat : block.getBody())
+            this.visitStatement(blockStat);
     }
 
     @Override
     public void visit(Conditional conditional) {
         //TODO: implement appropriate visit functionality
-        if( conditional == null )
+        if (conditional == null)
             return;
-        visitExpr( conditional.getExpression() );
-        visitStatement( conditional.getConsequenceBody() );
-        visitStatement( conditional.getAlternativeBody() );
+        visitExpr(conditional.getExpression());
+        visitStatement(conditional.getConsequenceBody());
+        visitStatement(conditional.getAlternativeBody());
     }
 
     @Override
     public void visit(While loop) {
         //TODO: implement appropriate visit functionality
-        if( loop == null )
+        if (loop == null)
             return;
-        visitExpr( loop.getCondition() );
-        visitStatement( loop.getBody() );
+        visitExpr(loop.getCondition());
+        visitStatement(loop.getBody());
 
     }
 
     @Override
     public void visit(Write write) {
         //TODO: implement appropriate visit functionality
-        if( write == null )
+        if (write == null)
             return;
-        visitExpr( write.getArg() );
+        visitExpr(write.getArg());
+    }
+
+    public Type getIdentifierType(Identifier identifier) {
+        Type type = null;
+
+        // todo: priority 3: check symbol table of parent
+
+        // priority 2: checked in the global scope
+        SymbolTable preSymbolTable = SymbolTable.top.getPreSymbolTable();
+        if (preSymbolTable == null)
+            return type;
+
+        for (String key : preSymbolTable.getSymItems().keySet()) {
+            String name = preSymbolTable.getSymItems().get(key).getName();
+            if (name.equals(identifier.getName()))
+                type = ((SymbolTableVariableItemBase) preSymbolTable.getSymItems().get(key)).getType();
+        }
+
+        // priority 3: check inside method
+        SymbolTable currentSymbolTable = SymbolTable.top;
+        for (String key : currentSymbolTable.getSymItems().keySet()) {
+            String name = currentSymbolTable.getSymItems().get(key).getName();
+            if (name.equals(identifier.getName())){
+                type = ((SymbolTableVariableItemBase) currentSymbolTable.getSymItems().get(key)).getType();
+            }
+        }
+        return type;
     }
 }

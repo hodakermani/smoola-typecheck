@@ -8,6 +8,10 @@ public abstract class SymbolTableItem {
 	public SymbolTableItem() {
 	}
 
+	public String getName() {
+		return this.name;
+	}
+
 	public abstract String getKey();
 
 }

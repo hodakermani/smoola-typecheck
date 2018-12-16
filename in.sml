@@ -6,9 +6,9 @@ class MainClass {
 
 class Test1 {
     var i : int;
-    def method1() : string {
-        var j : string;
-        j = "hello world!";
+    def method1() : int {
+        var j : int;
+        j = 10;
         return j;
     }
 }
@@ -16,13 +16,15 @@ class Test1 {
 class Test2 extends Test1 {
     var variable : int[];
 
-    def method2(hoda: int): int {
+    def method2(): int {
         i = 10;
         variable = new int[10];
         return i;
     }
 
     def method3(): int {
+        var b: boolean;
+        b = true;
         if(a == 2) then
             b = true;
         else
