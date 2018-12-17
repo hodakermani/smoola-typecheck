@@ -211,9 +211,6 @@ public class NameAnalyser extends VisitorImpl {
         //TODO: implement appropriate visit functionality
         if( methodDeclaration == null )
             return;
-
-        System.out.println("return type: " + methodDeclaration.getReturnValue());
-
         if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) )
             symConstructor.construct( methodDeclaration );
         else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
@@ -248,10 +245,9 @@ public class NameAnalyser extends VisitorImpl {
         if( varDeclaration == null )
             return;
 
-        System.out.println("var type is:" + varDeclaration.getType());
         // how to get types
         //        System.out.println("this is identifier's type");
-        //        System.out.println(this.getIdentifierType(varDeclaration.getIdentifier()).toString());
+//                System.out.println(this.getIdentifierType(varDeclaration.getIdentifier()).toString());
         if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
             checkForPropertyRedefinition( varDeclaration );
         visitExpr( varDeclaration.getIdentifier() );
@@ -300,7 +296,7 @@ public class NameAnalyser extends VisitorImpl {
     public void visit(Identifier identifier) {
         //TODO: implement appropriate visit functionality
         identifier.typeCorrect = true;
-        identifier.selfType = this.getIdentifierType(identifier).toString();
+//        identifier.selfType = this.getIdentifierType(identifier).toString();
     }
 
     @Override
@@ -458,18 +454,20 @@ public class NameAnalyser extends VisitorImpl {
         }
     }
 
-    public Type getIdentifierType(Identifier identifier) {
+    private Type getIdentifierType(Identifier identifier) {
         Type type = null;
         // todo: priority 3: check symbol table of parent
+
         // priority 2: checked in the global scope
         SymbolTable preSymbolTable = SymbolTable.top.getPreSymbolTable();
-        if (preSymbolTable == null)
-            return type;
-        for (String key : preSymbolTable.getSymItems().keySet()) {
-            String name = preSymbolTable.getSymItems().get(key).getName();
-            if (name.equals(identifier.getName()))
-                type = ((SymbolTableVariableItemBase) preSymbolTable.getSymItems().get(key)).getType();
+        if (preSymbolTable != null) {
+            for (String key : preSymbolTable.getSymItems().keySet()) {
+                String name = preSymbolTable.getSymItems().get(key).getName();
+                if (name.equals(identifier.getName()))
+                    type = ((SymbolTableVariableItemBase) preSymbolTable.getSymItems().get(key)).getType();
+            }
         }
+
         // priority 3: check inside method
         SymbolTable currentSymbolTable = SymbolTable.top;
         for (String key : currentSymbolTable.getSymItems().keySet()) {
@@ -478,6 +476,7 @@ public class NameAnalyser extends VisitorImpl {
                 type = ((SymbolTableVariableItemBase) currentSymbolTable.getSymItems().get(key)).getType();
             }
         }
+
         return type;
     }
 }
