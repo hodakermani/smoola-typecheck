@@ -1,5 +1,6 @@
 package main.ast.Type.ArrayType;
 
+import main.ast.Type.PrimitiveType.IntType;
 import main.ast.Type.Type;
 
 public class ArrayType extends Type {
@@ -15,5 +16,10 @@ public class ArrayType extends Type {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof ArrayType;
     }
 }

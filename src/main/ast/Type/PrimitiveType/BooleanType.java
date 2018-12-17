@@ -8,4 +8,9 @@ public class BooleanType extends Type {
     public String toString() {
         return "bool";
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof BooleanType;
+    }
 }

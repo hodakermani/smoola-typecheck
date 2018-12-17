@@ -10,6 +10,7 @@ public class SymbolTable {
 
     SymbolTable pre;
     HashMap<String, SymbolTableItem> items;
+    private String name;
 
     // Static members region
 
@@ -29,6 +30,13 @@ public class SymbolTable {
         return items.size();
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String sysName) {
+        this.name = sysName;
+    }
 
     // Use it in pass1 scope end
     public static void pop() {

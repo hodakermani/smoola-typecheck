@@ -19,9 +19,10 @@ public class SymbolTableConstructor {
         SymbolTable.push( new SymbolTable( null) );
         SymbolTable.root = SymbolTable.top;
     }
-    public void construct(ClassDeclaration classDeclaration )
+    public void construct(ClassDeclaration classDeclaration, String _className)
     {
         SymbolTable classSymTable = new SymbolTable( SymbolTable.top );
+        classSymTable.setName(_className);
         ClassSymbolTableItem classItem = new ClassSymbolTableItem( classDeclaration );
         try {
             classItem.setSymbolTable( classSymTable );

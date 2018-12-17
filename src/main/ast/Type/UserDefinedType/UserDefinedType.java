@@ -37,4 +37,10 @@ public class UserDefinedType extends Type {
         //return classDeclaration.getName().getName();
         return this.getName().getName();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        UserDefinedType other1 = (UserDefinedType)other;
+        return other1.name.getName().equals(this.name.getName());
+    }
 }

@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class SymbolTableMethodItem extends SymbolTableItem {
 
+    public ArrayList<Type> getArgTypes() {
+        return argTypes;
+    }
+
     protected ArrayList<Type> argTypes = new ArrayList<>();
     protected SymbolTable methodSymbolTable;
     protected MethodDeclaration methodDeclaration;

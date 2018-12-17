@@ -202,6 +202,7 @@ grammar Smoola;
         'writeln(' writeExpr=expression ')' ';'
         {
             $writeStat = new Write( $writeExpr.finalExpr );
+            setPosition( $writeStat , $writeExpr.finalExpr.getLineNum() , $writeExpr.finalExpr.getColNum() );
         }
     ;
     statementAssignment returns[ Assign assignStat ]:

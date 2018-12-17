@@ -197,8 +197,10 @@ public class NameAnalyser extends VisitorImpl {
         //TODO: implement appropriate visit functionality
         if( classDeclaration == null )
             return;
-        if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) )
-            symConstructor.construct( classDeclaration );
+        String className = classDeclaration.getName().getName();
+        if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) ) {
+            symConstructor.construct( classDeclaration, className);
+        }
         else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
             checkForPropertyRedefinition( classDeclaration );
         visitExpr( classDeclaration.getName() );
@@ -245,12 +247,14 @@ public class NameAnalyser extends VisitorImpl {
 
     @Override
     public void visit(VarDeclaration varDeclaration) {
-        //TODO: implement appropriate visit functionality
         if( varDeclaration == null )
             return;
         if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
             checkForPropertyRedefinition( varDeclaration );
         visitExpr( varDeclaration.getIdentifier() );
+
+        if (varDeclaration.getType() == null)
+            varDeclaration.setType(new UserDefinedType(varDeclaration.getIdentifier()));
     }
 
     @Override
@@ -264,6 +268,7 @@ public class NameAnalyser extends VisitorImpl {
             if(arrayCall.getInstance().typeCorrect && arrayCall.getInstance().selfType.equals("int[]") && arrayCall.getIndex().typeCorrect && arrayCall.getIndex().selfType.equals("int")) {
                 arrayCall.typeCorrect = true;
                 arrayCall.selfType = "int";
+                arrayCall.getType().isRightValue = true;
             } else {
                 System.out.println("array call type error!");
             }
@@ -306,6 +311,7 @@ public class NameAnalyser extends VisitorImpl {
             SymbolTableItem item = currentSymbolTable.find(name);
             identifier.setType(item.getType());
             identifier.selfType = item.getType().toString();
+            identifier.getType().isRightValue = false;
         } catch (ItemNotFoundException e) {
             //todo: set type as NoType
             this.addError("variable " + name + " is not declared", identifier.getLineNum());
@@ -356,12 +362,35 @@ public class NameAnalyser extends VisitorImpl {
             visitExpr(methodCall.getMethodName());
             for (Expression argument : methodCall.getArgs())
                 visitExpr(argument);
+
+            ArrayList<Expression> arguments = methodCall.getArgs();
+            ArrayList<Type> methodArguments = null;
+            try {
+                if( traverseState != TraverseState.redefinitionAndArrayErrorCatching )
+                    return;
+
+                methodArguments = ((SymbolTableMethodItem)classSymbolTableItem.getClassSym().find(methodName)).getArgTypes();
+                if (methodArguments.size() != arguments.size()) {
+                    this.addError("number of arguments used for calling " + methodName + " do not match method signature ", methodCall.getInstance().getLineNum());
+                    return;
+                }
+                for (int i = 0; i < arguments.size(); i++) {
+                    Type methodType = methodArguments.get(i);
+                    Type calledType = arguments.get(i).getType();
+                    if (!methodType.equals(calledType)) {
+                        this.addError("arguments used for calling " + methodName + " do not match method signature ", methodCall.getInstance().getLineNum());
+                        return;
+                    }
+                }
+            } catch (ItemNotFoundException e) {
+                this.addError("there is no method named " + methodName + " in class " + className, methodCall.getInstance().getLineNum());
+                return;
+            }
         }
         catch( NullPointerException npe )
         {
             System.out.println( "syntax error occurred" );
         }
-        //TODO: implement appropriate visit functionality
     }
 
     @Override
@@ -389,7 +418,13 @@ public class NameAnalyser extends VisitorImpl {
 
     @Override
     public void visit(This instance) {
-        //TODO: implement appropriate visit functionality
+        SymbolTable top = SymbolTable.top.getPreSymbolTable();
+        String className = top.getName();
+        try {
+            instance.setType(SymbolTable.root.get(ClassSymbolTableItem.CLASS + className).getType());
+        } catch (ItemNotFoundException e) {
+            this.addError("class " + className + " is not declared" + className, instance.getLineNum());
+        }
     }
 
     @Override
@@ -405,7 +440,6 @@ public class NameAnalyser extends VisitorImpl {
             System.out.println( "unary value is null" );
         }
     }
-
 
     @Override
     public void visit(BooleanValue value) {
@@ -439,6 +473,9 @@ public class NameAnalyser extends VisitorImpl {
             Expression rValExpr = assign.getrValue();
             if (rValExpr != null)
                 visitExpr(rValExpr);
+
+//            if (lExpr.getType().isRightValue)
+//                this.addError("left side of assignment must be a left value", lExpr.getLineNum());
         }
         catch( NullPointerException npe )
         {
