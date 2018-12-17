@@ -261,12 +261,12 @@ public class NameAnalyser extends VisitorImpl {
         try {
             visitExpr( arrayCall.getInstance() );
             visitExpr( arrayCall.getIndex() );
-            if(arrayCall.getInstance().typeCorrect && arrayCall.getInstance().selfType.equals("int[]") && arrayCall.getIndex().typeCorrect && arrayCall.getIndex().selfType.equals("int")) {
-                arrayCall.typeCorrect = true;
-                arrayCall.selfType = "int";
-            } else {
-                System.out.println("array call type error!");
-            }
+//            if(arrayCall.getInstance().typeCorrect && arrayCall.getInstance().selfType.equals("int[]") && arrayCall.getIndex().typeCorrect && arrayCall.getIndex().selfType.equals("int")) {
+//                arrayCall.typeCorrect = true;
+//                arrayCall.selfType = "int";
+//            } else {
+//                System.out.println("array call type error!");
+//            }
         }
         catch( NullPointerException npe )
         {
@@ -305,12 +305,12 @@ public class NameAnalyser extends VisitorImpl {
         if( length == null )
             return;
         visitExpr( length.getExpression() );
-        if(length.getExpression().typeCorrect && length.getExpression().selfType.equals("int[]")) {
-            length.typeCorrect = true;
-            length.selfType = "int";
-        } else {
-            System.out.println("invalid method call for length");
-        }
+//        if(length.getExpression().typeCorrect && length.getExpression().selfType.equals("int[]")) {
+//            length.typeCorrect = true;
+//            length.selfType = "int";
+//        } else {
+//            System.out.println("invalid method call for length");
+//        }
     }
 
     @Override
