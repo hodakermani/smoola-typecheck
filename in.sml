@@ -1,7 +1,6 @@
 class MainClass {
     def main(): int {
-        var T2: Test2;
-        return T2.method2();
+        return new Test2().method2();
     }
 }
 
@@ -18,8 +17,10 @@ class Test2 extends Test1 {
     var variable : int;
 
     def method2(hoda: int): int {
+        var heh: int;
         i = 10;
         variable = new int[10];
+        heh = variable[true];
         return i;
     }
 
@@ -45,6 +46,7 @@ class Test2 extends Test1 {
         var arr : int[];
         arr = new int[666];
         writeln(arr.length);
+        writeln(new Test2());
         return 0;
     }
 }

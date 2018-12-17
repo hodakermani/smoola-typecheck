@@ -1,5 +1,6 @@
 package main.visitor.nameAnalyzer;
 import main.ast.Type.Type;
+import main.ast.Type.UserDefinedType.UserDefinedType;
 import main.ast.node.Node;
 import main.ast.node.Program;
 import main.ast.node.declaration.ClassDeclaration;
@@ -247,10 +248,6 @@ public class NameAnalyser extends VisitorImpl {
         //TODO: implement appropriate visit functionality
         if( varDeclaration == null )
             return;
-
-        // how to get types
-        //        System.out.println("this is identifier's type");
-//                System.out.println(this.getIdentifierType(varDeclaration.getIdentifier()).toString());
         if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
             checkForPropertyRedefinition( varDeclaration );
         visitExpr( varDeclaration.getIdentifier() );
@@ -300,19 +297,18 @@ public class NameAnalyser extends VisitorImpl {
         //TODO: implement appropriate visit functionality
         identifier.typeCorrect = true;
 
+        if (identifier.getType() != null)
+            return;
+
         String name = identifier.getName();
         SymbolTable currentSymbolTable = SymbolTable.top;
         try {
             SymbolTableItem item = currentSymbolTable.find(name);
             identifier.setType(item.getType());
             identifier.selfType = item.getType().toString();
-
-            // todo: is not working for methods!
-
         } catch (ItemNotFoundException e) {
-            if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) ) {
-                nameErrors.add( "Line:" + identifier.getLineNum() + ":variable " + name + " is not declared" );
-            }
+            //todo: set type as NoType
+            this.addError("variable " + name + " is not declared", identifier.getLineNum());
         }
     }
 
@@ -336,6 +332,27 @@ public class NameAnalyser extends VisitorImpl {
             return;
         try {
             visitExpr(methodCall.getInstance());
+            String className = methodCall.getInstance().getType().toString();
+            ClassSymbolTableItem classSymbolTableItem = null;
+            try {
+                if( traverseState == TraverseState.redefinitionAndArrayErrorCatching )
+                    classSymbolTableItem = (ClassSymbolTableItem) SymbolTable.root.find(className);
+            } catch (ItemNotFoundException e) {
+                this.addError("class " + className + " is not declared" + className, methodCall.getInstance().getLineNum());
+                return;
+            }
+
+            String methodName = methodCall.getMethodName().getName();
+            try {
+                if( traverseState == TraverseState.redefinitionAndArrayErrorCatching )
+                    classSymbolTableItem.getClassSym().find(methodName);
+            } catch (ItemNotFoundException e) {
+                this.addError("there is no method named " + methodName + " in class " + className, methodCall.getInstance().getLineNum());
+                return;
+            }
+
+            methodCall.getMethodName().setType(new UserDefinedType(methodCall.getMethodName()));
+
             visitExpr(methodCall.getMethodName());
             for (Expression argument : methodCall.getArgs())
                 visitExpr(argument);
@@ -366,6 +383,7 @@ public class NameAnalyser extends VisitorImpl {
         //TODO: implement appropriate visit functionality
         if( newClass == null )
             return;
+        newClass.setType(new UserDefinedType(newClass.getClassName()));
         visitExpr( newClass.getClassName() );
     }
 
@@ -467,33 +485,12 @@ public class NameAnalyser extends VisitorImpl {
             write.typeCorrect = true;
         } else {
             write.typeCorrect = false;
-            System.out.println("not a valid argument for writeln");
+            this.addError("unsupported type for writeln", write.getLineNum());
         }
     }
 
-    private Type getIdentifierType(Identifier identifier) {
-        Type type = null;
-        // todo: priority 3: check symbol table of parent
-
-        // priority 2: checked in the global scope
-        SymbolTable preSymbolTable = SymbolTable.top.getPreSymbolTable();
-        if (preSymbolTable != null) {
-            for (String key : preSymbolTable.getSymItems().keySet()) {
-                String name = preSymbolTable.getSymItems().get(key).getName();
-                if (name.equals(identifier.getName()))
-                    type = ((SymbolTableVariableItemBase) preSymbolTable.getSymItems().get(key)).getType();
-            }
-        }
-
-        // priority 3: check inside method
-        SymbolTable currentSymbolTable = SymbolTable.top;
-        for (String key : currentSymbolTable.getSymItems().keySet()) {
-            String name = currentSymbolTable.getSymItems().get(key).getName();
-            if (name.equals(identifier.getName())){
-                type = ((SymbolTableVariableItemBase) currentSymbolTable.getSymItems().get(key)).getType();
-            }
-        }
-
-        return type;
+    private void addError(String msg, int lineNumber) {
+        if( traverseState == TraverseState.redefinitionAndArrayErrorCatching )
+            nameErrors.add( "Line:" + lineNumber + ":" + msg );
     }
 }
