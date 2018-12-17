@@ -311,9 +311,8 @@ public class NameAnalyser extends VisitorImpl {
             SymbolTableItem item = currentSymbolTable.find(name);
             identifier.setType(item.getType());
             identifier.selfType = item.getType().toString();
-            identifier.getType().isRightValue = false;
+//            identifier.getType().isRightValue = false;
         } catch (ItemNotFoundException e) {
-            //todo: set type as NoType
             this.addError("variable " + name + " is not declared", identifier.getLineNum());
         }
     }

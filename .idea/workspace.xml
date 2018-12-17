@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a027525-9d96-45d6-8534-9d834483c7ca" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/in.sml" afterPath="$PROJECT_DIR$/in.sml" />
-      <change beforePath="$PROJECT_DIR$/src/Smoola.g4" afterPath="$PROJECT_DIR$/src/Smoola.g4" />
-      <change beforePath="$PROJECT_DIR$/src/main/ast/Type/ArrayType/ArrayType.java" afterPath="$PROJECT_DIR$/src/main/ast/Type/ArrayType/ArrayType.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/BooleanType.java" afterPath="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/BooleanType.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/IntType.java" afterPath="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/IntType.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/StringType.java" afterPath="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/StringType.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/ast/Type/Type.java" afterPath="$PROJECT_DIR$/src/main/ast/Type/Type.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/ast/Type/UserDefinedType/UserDefinedType.java" afterPath="$PROJECT_DIR$/src/main/ast/Type/UserDefinedType/UserDefinedType.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/symbolTable/SymbolTable.java" afterPath="$PROJECT_DIR$/src/main/symbolTable/SymbolTable.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/symbolTable/SymbolTableMethodItem.java" afterPath="$PROJECT_DIR$/src/main/symbolTable/SymbolTableMethodItem.java" />
       <change beforePath="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" afterPath="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/SymbolTableConstructor.java" afterPath="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/SymbolTableConstructor.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -42,8 +30,8 @@
       <file leaf-file-name="NameAnalyser.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="900">
-              <caret line="335" column="45" lean-forward="false" selection-start-line="335" selection-start-column="45" selection-end-line="335" selection-end-column="45" />
+            <state relative-caret-position="329">
+              <caret line="313" column="56" lean-forward="true" selection-start-line="313" selection-start-column="56" selection-end-line="313" selection-end-column="56" />
               <folding>
                 <element signature="method#NameAnalyser#0;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#switchState#0;class#NameAnalyser#0" expanded="false" />
@@ -60,7 +48,6 @@
                 <element signature="method#visit#5;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#6;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#7;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#visit#8;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#9;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#10;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#11;class#NameAnalyser#0" expanded="false" />
@@ -70,8 +57,6 @@
                 <element signature="method#visit#15;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#16;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#17;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#visit#18;class#NameAnalyser#0" expanded="false" />
-                <element signature="e#20236#20283#0" expanded="false" />
                 <element signature="method#visit#19;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#20;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#21;class#NameAnalyser#0" expanded="false" />
@@ -247,13 +232,13 @@
         <option value="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/SymbolTableConstructor.java" />
         <option value="$PROJECT_DIR$/src/main/ast/Type/Type.java" />
         <option value="$PROJECT_DIR$/src/main/symbolTable/SymbolTableMethodItem.java" />
-        <option value="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" />
         <option value="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/StringType.java" />
         <option value="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/IntType.java" />
         <option value="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/BooleanType.java" />
         <option value="$PROJECT_DIR$/src/main/ast/Type/ArrayType/ArrayType.java" />
         <option value="$PROJECT_DIR$/src/main/ast/Type/UserDefinedType/UserDefinedType.java" />
         <option value="$PROJECT_DIR$/in.sml" />
+        <option value="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" />
       </list>
     </option>
   </component>
@@ -517,7 +502,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31171000" />
+    <option name="totallyTimeSpent" value="31440000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -543,7 +528,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956383" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3149931" sideWeight="0.49676898" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3149931" sideWeight="0.49676898" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23424879" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1035,8 +1020,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="335" column="45" lean-forward="false" selection-start-line="335" selection-start-column="45" selection-end-line="335" selection-end-column="45" />
+        <state relative-caret-position="329">
+          <caret line="313" column="56" lean-forward="true" selection-start-line="313" selection-start-column="56" selection-end-line="313" selection-end-column="56" />
           <folding>
             <element signature="method#NameAnalyser#0;class#NameAnalyser#0" expanded="false" />
             <element signature="method#switchState#0;class#NameAnalyser#0" expanded="false" />
@@ -1053,7 +1038,6 @@
             <element signature="method#visit#5;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#6;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#7;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#visit#8;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#9;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#10;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#11;class#NameAnalyser#0" expanded="false" />
@@ -1063,8 +1047,6 @@
             <element signature="method#visit#15;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#16;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#17;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#visit#18;class#NameAnalyser#0" expanded="false" />
-            <element signature="e#20236#20283#0" expanded="false" />
             <element signature="method#visit#19;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#20;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#21;class#NameAnalyser#0" expanded="false" />
