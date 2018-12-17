@@ -1,6 +1,7 @@
 package main.symbolTable;
 
 import main.ast.Type.Type;
+import main.ast.Type.UserDefinedType.UserDefinedType;
 import main.ast.node.declaration.MethodDeclaration;
 import main.ast.node.declaration.VarDeclaration;
 
@@ -25,6 +26,11 @@ public class SymbolTableMethodItem extends SymbolTableItem {
         for( VarDeclaration arg: methodDeclaration.getArgs() )
             argTypes.add( arg.getType() );
         this.methodDeclaration = methodDeclaration;
+    }
+
+    @Override
+    public Type getType() {
+        return new UserDefinedType(this.methodDeclaration.getName());
     }
 
     public void setMethodSymbolTable( SymbolTable symTable )

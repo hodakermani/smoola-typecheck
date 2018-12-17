@@ -34,11 +34,12 @@ public abstract class SymbolTableVariableItemBase extends SymbolTableItem {
         varDeclaration.getIdentifier().setName( name );
     }
 
-	public Type getType() {
-		return type;
-	}
+    @Override
+    public Type getType() {
+	    return this.type;
+    }
 
-	@Override
+    @Override
 	public String getKey() {
 		return SymbolTableVariableItemBase.VARIABLE + name;
 	}

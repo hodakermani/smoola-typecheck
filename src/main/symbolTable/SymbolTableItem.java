@@ -1,5 +1,7 @@
 package main.symbolTable;
 
+import main.ast.Type.Type;
+
 public abstract class SymbolTableItem {
 	protected String name;
 
@@ -9,6 +11,8 @@ public abstract class SymbolTableItem {
 	public String getName() {
 		return this.name;
 	}
+
+	public abstract Type getType();
 
 	public abstract String getKey();
 

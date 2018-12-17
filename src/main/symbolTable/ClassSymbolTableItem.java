@@ -1,5 +1,7 @@
 package main.symbolTable;
 
+import main.ast.Type.Type;
+import main.ast.Type.UserDefinedType.UserDefinedType;
 import main.ast.node.declaration.ClassDeclaration;
 
 public class ClassSymbolTableItem extends SymbolTableItem {
@@ -11,6 +13,12 @@ public class ClassSymbolTableItem extends SymbolTableItem {
         this.name = classDeclaration.getName().getName();
         this.classDeclaration = classDeclaration;
     }
+
+    @Override
+    public Type getType() {
+        return new UserDefinedType(this.classDeclaration.getName());
+    }
+
     @Override
     public String getKey()
     {

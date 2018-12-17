@@ -1,5 +1,6 @@
 package main.ast.Type.UserDefinedType;
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import main.ast.Type.Type;
 import main.ast.node.declaration.ClassDeclaration;
 import main.ast.node.expression.Identifier;
@@ -9,6 +10,12 @@ public class UserDefinedType extends Type {
 
     public ClassDeclaration getClassDeclaration() {
         return classDeclaration;
+    }
+
+    public UserDefinedType() {};
+
+    public UserDefinedType(Identifier identifier) {
+        this.setName(identifier);
     }
 
     public void setClassDeclaration(ClassDeclaration classDeclaration) {

@@ -13,9 +13,12 @@ import main.ast.node.expression.Value.StringValue;
 import main.ast.node.statement.*;
 import main.symbolTable.ClassSymbolTableItem;
 import main.symbolTable.SymbolTable;
+import main.symbolTable.SymbolTableItem;
 import main.symbolTable.SymbolTableMethodItem;
 import main.symbolTable.itemException.ItemNotFoundException;
 import main.symbolTable.symbolTableVariable.SymbolTableFieldVariableItem;
+import main.symbolTable.symbolTableVariable.SymbolTableLocalVariableItem;
+import main.symbolTable.symbolTableVariable.SymbolTableMethodArgumentItem;
 import main.symbolTable.symbolTableVariable.SymbolTableVariableItemBase;
 import main.visitor.VisitorImpl;
 
@@ -261,12 +264,12 @@ public class NameAnalyser extends VisitorImpl {
         try {
             visitExpr( arrayCall.getInstance() );
             visitExpr( arrayCall.getIndex() );
-//            if(arrayCall.getInstance().typeCorrect && arrayCall.getInstance().selfType.equals("int[]") && arrayCall.getIndex().typeCorrect && arrayCall.getIndex().selfType.equals("int")) {
-//                arrayCall.typeCorrect = true;
-//                arrayCall.selfType = "int";
-//            } else {
-//                System.out.println("array call type error!");
-//            }
+            if(arrayCall.getInstance().typeCorrect && arrayCall.getInstance().selfType.equals("int[]") && arrayCall.getIndex().typeCorrect && arrayCall.getIndex().selfType.equals("int")) {
+                arrayCall.typeCorrect = true;
+                arrayCall.selfType = "int";
+            } else {
+                System.out.println("array call type error!");
+            }
         }
         catch( NullPointerException npe )
         {
@@ -296,7 +299,21 @@ public class NameAnalyser extends VisitorImpl {
     public void visit(Identifier identifier) {
         //TODO: implement appropriate visit functionality
         identifier.typeCorrect = true;
-//        identifier.selfType = this.getIdentifierType(identifier).toString();
+
+        String name = identifier.getName();
+        SymbolTable currentSymbolTable = SymbolTable.top;
+        try {
+            SymbolTableItem item = currentSymbolTable.find(name);
+            identifier.setType(item.getType());
+            identifier.selfType = item.getType().toString();
+
+            // todo: is not working for methods!
+
+        } catch (ItemNotFoundException e) {
+            if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) ) {
+                nameErrors.add( "Line:" + identifier.getLineNum() + ":variable " + name + " is not declared" );
+            }
+        }
     }
 
     @Override
@@ -305,12 +322,12 @@ public class NameAnalyser extends VisitorImpl {
         if( length == null )
             return;
         visitExpr( length.getExpression() );
-//        if(length.getExpression().typeCorrect && length.getExpression().selfType.equals("int[]")) {
-//            length.typeCorrect = true;
-//            length.selfType = "int";
-//        } else {
-//            System.out.println("invalid method call for length");
-//        }
+        if(length.getExpression().typeCorrect && length.getExpression().selfType.equals("int[]")) {
+            length.typeCorrect = true;
+            length.selfType = "int";
+        } else {
+            System.out.println("invalid method call for length");
+        }
     }
 
     @Override
