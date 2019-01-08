@@ -21,11 +21,13 @@ class Test2 extends Test1 {
         i = 10;
         variable = new int[10];
         heh = variable[true];
-        return i;
+        return "hi";
     }
 
     def method3(): int {
         var b: boolean;
+        var a: int;
+        a = 2;
         b = true;
         i = 20;
         variable = 20;
@@ -35,20 +37,25 @@ class Test2 extends Test1 {
             b = false;
 
         while(a <> 0) {
-            a = a - 1;
+            a = b - 1;
         }
 
         writeln("Hello kiki!");
         return 0;
     }
+    def salam(): string {
+        return "salam";
+    }
 
     def method4(): int {
         var arr : int[];
+        var arr2: int[];
         var man: int;
         var test1: Test1;
         test1 = new Test1();
         arr = new int[666];
-        writeln(arr.length);
+        arr2 = new int[700];
+        writeln(this.method2());
         this.method5();
         return 0;
     }
