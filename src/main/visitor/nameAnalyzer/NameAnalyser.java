@@ -110,6 +110,11 @@ public class NameAnalyser extends VisitorImpl {
             SymbolTableVariableItemBase varItem = ( SymbolTableVariableItemBase) SymbolTable.top.getInCurrentScope( SymbolTableVariableItemBase.VARIABLE + name );
             varItem.setIndex( lastIndexOfVariable++ );
             SymbolTable.top.updateItemInCurrentScope( SymbolTableVariableItemBase.VARIABLE + name , varItem );
+
+            SymbolTable current = SymbolTable.top;
+
+
+
             if( varItem instanceof SymbolTableFieldVariableItem )
                 checkForPropertyRedefinitionInParentScopes(varDeclaration);
         }
@@ -204,18 +209,23 @@ public class NameAnalyser extends VisitorImpl {
         visitExpr( classDeclaration.getName() );
         visitExpr( classDeclaration.getParentName() );
 
-        // todo: check this + add the package name
-        cw.visit(V1_8, ACC_PUBLIC, className, null, "java/lang/Object", null);
-//        cw.visit(V1_8, ACC_PUBLIC, className, null, "java/lang/Object", new String[] { classDeclaration.getParentName().getName() });
+        if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) ) {
+            // todo: check this + add the package name
+            cw.visit(V1_8, ACC_PUBLIC, className, null, "java/lang/Object", null);
+        }
 
         for( VarDeclaration varDeclaration: classDeclaration.getVarDeclarations() ) {
-            this.visit(varDeclaration);
-            cw.visitField(ACC_PUBLIC , varDeclaration.getIdentifier().getName(), convertTypesToASM(varDeclaration.getType().toString()),
-                    null, null).visitEnd();
+            String varName = varDeclaration.getIdentifier().getName();
+            this.visit(varDeclaration, cw);
+
+            if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) ) {
+                cw.visitField(ACC_PUBLIC, varName, convertTypesToASM(varDeclaration.getType().toString()), null, null).visitEnd();
+            }
         }
-        for( MethodDeclaration methodDeclaration: classDeclaration.getMethodDeclarations() ) {
+
+        for( MethodDeclaration methodDeclaration: classDeclaration.getMethodDeclarations() )
             this.visit(methodDeclaration, cw);
-        }
+
         SymbolTable.pop();
     }
 
@@ -249,38 +259,45 @@ public class NameAnalyser extends VisitorImpl {
             symConstructor.construct( methodDeclaration );
         else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
             checkForPropertyRedefinition( methodDeclaration );
+
         for( VarDeclaration argDeclaration: methodDeclaration.getArgs() )
-            visit( argDeclaration );
+            visit( argDeclaration, cw );
         for( VarDeclaration localVariable: methodDeclaration.getLocalVars() )
-            this.visit( localVariable );
+            this.visit( localVariable, cw );
         for( Statement statement : methodDeclaration.getBody() )
             visitStatement( statement );
         visitExpr( methodDeclaration.getReturnValue() );
-        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, methodDeclaration.getName().toString(), "(" + getArgTypes(methodDeclaration.getArgs()) + ")" + methodDeclaration.getActualReturnType().toString(), null, null);
-        mv.visitCode();
-        Label methodStart = new Label();
-        Label methodEnd = new Label();
-        mv.visitLabel(methodStart);
 
-        for( VarDeclaration localVariable: methodDeclaration.getLocalVars() ) {
-            try {
-                String varName = localVariable.getIdentifier().getName();
-                SymbolTable currentSymbolTable = SymbolTable.top;
-                SymbolTableVariableItemBase item = (SymbolTableVariableItemBase)(currentSymbolTable.find(varName));
-                int index = item.getIndex();
+        // constructing the bytecode should be done only in the second traverse state
+        if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) ) {
+            String methodName = methodDeclaration.getName().toString();
+            String methodType = "(" + getArgTypes(methodDeclaration.getArgs()) + ")" + methodDeclaration.getActualReturnType().toString();
+            MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, methodName, methodType, null, null);
 
-                mv.visitLocalVariable(localVariable.getIdentifier().getName(),convertTypesToASM(localVariable.getType().toString()),null, methodStart, methodEnd, index);
-            } catch (ItemNotFoundException e) {
-                e.printStackTrace();
+            mv.visitCode();
+            Label methodStart = new Label();
+            Label methodEnd = new Label();
+            mv.visitLabel(methodStart);
+
+            for( VarDeclaration localVariable: methodDeclaration.getLocalVars() ) {
+                try {
+                    String varName = localVariable.getIdentifier().getName();
+                    SymbolTable currentSymbolTable = SymbolTable.top;
+                    SymbolTableVariableItemBase item = (SymbolTableVariableItemBase)(currentSymbolTable.find(varName));
+                    int index = item.getIndex();
+
+                    mv.visitLocalVariable(localVariable.getIdentifier().getName(),convertTypesToASM(localVariable.getType().toString()),null, methodStart, methodEnd, index);
+                } catch (ItemNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
-
         }
+
         SymbolTable.pop();
     }
 
     @Override
     public void visit(MainMethodDeclaration mainMethodDeclaration) {
-        //TODO: implement appropriate visit functionality
         if( mainMethodDeclaration == null )
             return;
         if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) )

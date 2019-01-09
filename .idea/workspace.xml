@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3a027525-9d96-45d6-8534-9d834483c7ca" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/SmoolaCompiler.java" afterPath="$PROJECT_DIR$/src/SmoolaCompiler.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/codeGenarator.java" afterPath="$PROJECT_DIR$/src/main/codeGenarator.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/visitor/Visitor.java" afterPath="$PROJECT_DIR$/src/main/visitor/Visitor.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/visitor/VisitorImpl.java" afterPath="$PROJECT_DIR$/src/main/visitor/VisitorImpl.java" />
       <change beforePath="$PROJECT_DIR$/src/main/visitor/astPrinter/ASTPrinter.java" afterPath="$PROJECT_DIR$/src/main/visitor/astPrinter/ASTPrinter.java" />
       <change beforePath="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" afterPath="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" />
     </list>
@@ -23,31 +19,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="in.sml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/in.sml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="27" column="23" lean-forward="true" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="NameAnalyser.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="37">
-              <caret line="102" column="45" lean-forward="false" selection-start-line="102" selection-start-column="17" selection-end-line="102" selection-end-column="45" />
+            <state relative-caret-position="491">
+              <caret line="222" column="13" lean-forward="false" selection-start-line="222" selection-start-column="13" selection-end-line="222" selection-end-column="13" />
               <folding>
                 <element signature="method#NameAnalyser#0;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#switchState#0;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#checkForPropertyRedefinition#0;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#checkForPropertyRedefinitionInParentScopes#0;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#checkForPropertyRedefinitionInParentScope#0;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#checkForPropertyRedefinition#2;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#0;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#1;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#visit#2;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#convertTypesToASM#0;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#getArgTypes#0;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#4;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#visit#5;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#6;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#7;class#NameAnalyser#0" expanded="false" />
-                <element signature="e#15945#15978#0" expanded="false" />
+                <element signature="e#16435#16468#0" expanded="false" />
                 <element signature="method#visit#8;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#9;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#10;class#NameAnalyser#0" expanded="false" />
-                <element signature="e#22848#22867#0" expanded="false" />
+                <element signature="e#23338#23357#0" expanded="false" />
                 <element signature="method#visit#11;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#12;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#13;class#NameAnalyser#0" expanded="false" />
@@ -56,7 +61,7 @@
                 <element signature="method#visit#16;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#17;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#18;class#NameAnalyser#0" expanded="false" />
-                <element signature="e#29703#29738#0" expanded="false" />
+                <element signature="e#30193#30228#0" expanded="false" />
                 <element signature="method#visit#19;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#20;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#21;class#NameAnalyser#0" expanded="false" />
@@ -67,14 +72,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="SymbolTable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/symbolTable/SymbolTable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-187">
+              <caret line="0" column="3" lean-forward="false" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getIdentifierType</find>
-      <find>identi</find>
-      <find>identifier</find>
-      <find>nameE</find>
       <find>TraverseState</find>
       <find>Len</find>
       <find>traver</find>
@@ -93,14 +104,18 @@
       <find>SymbolTableVariableItemBase(</find>
       <find>setIndex</find>
       <find>lastIndexOfVariable</find>
-      <find>convertTypesToASM</find>
       <find>getArgTypes</find>
       <find>top</find>
       <find>currentSymbolTable</find>
       <find>SymbolTableVariableItemBase</find>
       <find>++)</find>
-      <find>checkForPropertyRedefinition</find>
       <find>++</find>
+      <find>convertTypesToASM</find>
+      <find>put</find>
+      <find>VarDeclaration</find>
+      <find>checkForPropertyRedefinition</find>
+      <find>VarDeclaration</find>
+      <find>visitExpr</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/main/ast</dir>
@@ -438,16 +453,15 @@
       <option name="presentableId" value="Default" />
       <updated>1543651625383</updated>
       <workItem from="1543651626614" duration="5970000" />
-      <workItem from="1546972446389" duration="8758000" />
+      <workItem from="1546972446389" duration="12233000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41815000" />
+    <option name="totallyTimeSpent" value="45290000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -460,10 +474,10 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45392022" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23108666" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13408723" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.073505655" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="ANTLR Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -471,7 +485,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28198075" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4759285" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -521,20 +535,17 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java</url>
-          <line>111</line>
-          <properties />
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="57" />
+      <option name="time" value="71" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>traverseState.name()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>type.equals(&quot;int&quot;)</expression-string>
         <language-id>JAVA</language-id>
@@ -888,14 +899,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/in.sml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/SmoolaCompiler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="155">
@@ -914,36 +917,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/symbolTable/SymbolTable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="99" column="41" lean-forward="true" selection-start-line="99" selection-start-column="41" selection-end-line="99" selection-end-column="41" />
+        <state relative-caret-position="-187">
+          <caret line="0" column="3" lean-forward="false" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/in.sml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="23" lean-forward="true" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="102" column="45" lean-forward="false" selection-start-line="102" selection-start-column="17" selection-end-line="102" selection-end-column="45" />
+        <state relative-caret-position="491">
+          <caret line="222" column="13" lean-forward="false" selection-start-line="222" selection-start-column="13" selection-end-line="222" selection-end-column="13" />
           <folding>
             <element signature="method#NameAnalyser#0;class#NameAnalyser#0" expanded="false" />
             <element signature="method#switchState#0;class#NameAnalyser#0" expanded="false" />
             <element signature="method#checkForPropertyRedefinition#0;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#checkForPropertyRedefinitionInParentScopes#0;class#NameAnalyser#0" expanded="false" />
             <element signature="method#checkForPropertyRedefinitionInParentScope#0;class#NameAnalyser#0" expanded="false" />
             <element signature="method#checkForPropertyRedefinition#2;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#0;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#1;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#visit#2;class#NameAnalyser#0" expanded="false" />
             <element signature="method#convertTypesToASM#0;class#NameAnalyser#0" expanded="false" />
             <element signature="method#getArgTypes#0;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#4;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#visit#5;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#6;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#7;class#NameAnalyser#0" expanded="false" />
-            <element signature="e#15945#15978#0" expanded="false" />
+            <element signature="e#16435#16468#0" expanded="false" />
             <element signature="method#visit#8;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#9;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#10;class#NameAnalyser#0" expanded="false" />
-            <element signature="e#22848#22867#0" expanded="false" />
+            <element signature="e#23338#23357#0" expanded="false" />
             <element signature="method#visit#11;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#12;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#13;class#NameAnalyser#0" expanded="false" />
@@ -952,7 +962,7 @@
             <element signature="method#visit#16;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#17;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#18;class#NameAnalyser#0" expanded="false" />
-            <element signature="e#29703#29738#0" expanded="false" />
+            <element signature="e#30193#30228#0" expanded="false" />
             <element signature="method#visit#19;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#20;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#21;class#NameAnalyser#0" expanded="false" />

@@ -56,9 +56,9 @@ public class ASTPrinter extends VisitorImpl {
         System.out.println(methodDeclaration.toString());
         visitExpr( methodDeclaration.getName() );
         for( VarDeclaration argDeclaration: methodDeclaration.getArgs() )
-            visit( argDeclaration );
+            visit( argDeclaration, cw );
         for( VarDeclaration localVariable: methodDeclaration.getLocalVars() )
-            this.visit( localVariable );
+            this.visit( localVariable, cw );
         for( Statement statement : methodDeclaration.getBody() )
             visitStatement( statement );
         visitExpr( methodDeclaration.getReturnValue() );
