@@ -1,5 +1,6 @@
 package main.visitor;
 
+import jdk.internal.org.objectweb.asm.ClassWriter;
 import main.ast.node.Node;
 import main.ast.node.Program;
 import main.ast.node.declaration.ClassDeclaration;
@@ -62,9 +63,9 @@ public abstract class VisitorImpl implements Visitor {
 
     //Declarations
     public abstract void visit (ClassDeclaration classDeclaration);
-    public abstract void visit (MethodDeclaration methodDeclaration);
+    public abstract void visit (MethodDeclaration methodDeclaration, ClassWriter cw);
     public abstract void visit (MainMethodDeclaration mainMethodDeclaration);
-    public abstract void visit (VarDeclaration varDeclaration);
+    public abstract void visit (VarDeclaration varDeclaration, ClassWriter cw);
 
     //Expressions
     public abstract void visit(ArrayCall arrayCall);

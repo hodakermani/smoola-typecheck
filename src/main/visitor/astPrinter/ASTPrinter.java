@@ -2,6 +2,7 @@ package main.visitor.astPrinter;
 
 
 
+import jdk.internal.org.objectweb.asm.ClassWriter;
 import main.ast.node.Node;
 import main.ast.node.Program;
 import main.ast.node.declaration.ClassDeclaration;
@@ -48,7 +49,7 @@ public class ASTPrinter extends VisitorImpl {
     }
 
     @Override
-    public void visit(MethodDeclaration methodDeclaration) {
+    public void visit(MethodDeclaration methodDeclaration, ClassWriter cw) {
         //TODO: implement appropriate visit functionality
         if( methodDeclaration == null )
             return;
@@ -76,7 +77,7 @@ public class ASTPrinter extends VisitorImpl {
     }
 
     @Override
-    public void visit(VarDeclaration varDeclaration) {
+    public void visit(VarDeclaration varDeclaration, ClassWriter cw) {
         //TODO: implement appropriate visit functionality
         if( varDeclaration == null )
             return;

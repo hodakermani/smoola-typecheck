@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="3a027525-9d96-45d6-8534-9d834483c7ca" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/symbolTable/SymbolTableMethodItem.java" afterPath="$PROJECT_DIR$/src/main/symbolTable/SymbolTableMethodItem.java" />
+      <change beforePath="$PROJECT_DIR$/src/SmoolaCompiler.java" afterPath="$PROJECT_DIR$/src/SmoolaCompiler.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/codeGenarator.java" afterPath="$PROJECT_DIR$/src/main/codeGenarator.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/visitor/Visitor.java" afterPath="$PROJECT_DIR$/src/main/visitor/Visitor.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/visitor/VisitorImpl.java" afterPath="$PROJECT_DIR$/src/main/visitor/VisitorImpl.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/visitor/astPrinter/ASTPrinter.java" afterPath="$PROJECT_DIR$/src/main/visitor/astPrinter/ASTPrinter.java" />
       <change beforePath="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" afterPath="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -19,40 +23,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="in.sml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/in.sml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="16" column="4" lean-forward="false" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SymbolTable.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/symbolTable/SymbolTable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="24" column="27" lean-forward="true" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NameAnalyser.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="NameAnalyser.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1545">
-              <caret line="129" column="37" lean-forward="true" selection-start-line="129" selection-start-column="37" selection-end-line="129" selection-end-column="37" />
+            <state relative-caret-position="37">
+              <caret line="102" column="45" lean-forward="false" selection-start-line="102" selection-start-column="17" selection-end-line="102" selection-end-column="45" />
               <folding>
-                <element signature="method#visit#3;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#NameAnalyser#0;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#switchState#0;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#checkForPropertyRedefinition#0;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#checkForPropertyRedefinitionInParentScope#0;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#checkForPropertyRedefinition#2;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#visit#0;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#visit#1;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#visit#2;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#convertTypesToASM#0;class#NameAnalyser#0" expanded="false" />
+                <element signature="method#getArgTypes#0;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#4;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#5;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#6;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#7;class#NameAnalyser#0" expanded="false" />
+                <element signature="e#15945#15978#0" expanded="false" />
                 <element signature="method#visit#8;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#9;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#10;class#NameAnalyser#0" expanded="false" />
+                <element signature="e#22848#22867#0" expanded="false" />
                 <element signature="method#visit#11;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#12;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#13;class#NameAnalyser#0" expanded="false" />
@@ -61,7 +56,7 @@
                 <element signature="method#visit#16;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#17;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#18;class#NameAnalyser#0" expanded="false" />
-                <element signature="e#22564#22611#0" expanded="false" />
+                <element signature="e#29703#29738#0" expanded="false" />
                 <element signature="method#visit#19;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#20;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#21;class#NameAnalyser#0" expanded="false" />
@@ -72,64 +67,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="codeGenarator.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/codeGenarator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="32" lean-forward="true" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
-              <folding>
-                <element signature="e#179#180#0" expanded="true" />
-                <element signature="e#200#201#0" expanded="true" />
-                <element signature="e#259#260#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClassSymbolTableItem.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/symbolTable/ClassSymbolTableItem.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-              <folding>
-                <element signature="e#582#583#0" expanded="true" />
-                <element signature="e#657#658#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SymbolTableFieldVariableItem.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/symbolTable/symbolTableVariable/SymbolTableFieldVariableItem.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="5" column="77" lean-forward="false" selection-start-line="5" selection-start-column="50" selection-end-line="5" selection-end-column="77" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SymbolTableVariableItemBase.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/symbolTable/symbolTableVariable/SymbolTableVariableItemBase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="567">
-              <caret line="49" column="24" lean-forward="false" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getAlre</find>
-      <find>getCon</find>
-      <find>getBo</find>
-      <find>getBody</find>
-      <find>ast.</find>
-      <find>ant</find>
-      <find>return type</find>
       <find>getIdentifierType</find>
       <find>identi</find>
       <find>identifier</find>
@@ -153,6 +94,13 @@
       <find>setIndex</find>
       <find>lastIndexOfVariable</find>
       <find>convertTypesToASM</find>
+      <find>getArgTypes</find>
+      <find>top</find>
+      <find>currentSymbolTable</find>
+      <find>SymbolTableVariableItemBase</find>
+      <find>++)</find>
+      <find>checkForPropertyRedefinition</find>
+      <find>++</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/main/ast</dir>
@@ -205,10 +153,14 @@
         <option value="$PROJECT_DIR$/src/main/ast/Type/PrimitiveType/BooleanType.java" />
         <option value="$PROJECT_DIR$/src/main/ast/Type/ArrayType/ArrayType.java" />
         <option value="$PROJECT_DIR$/src/main/ast/Type/UserDefinedType/UserDefinedType.java" />
-        <option value="$PROJECT_DIR$/in.sml" />
         <option value="$PROJECT_DIR$/src/main/symbolTable/SymbolTableMethodItem.java" />
-        <option value="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" />
+        <option value="$PROJECT_DIR$/src/main/visitor/VisitorImpl.java" />
         <option value="$PROJECT_DIR$/src/main/codeGenarator.java" />
+        <option value="$PROJECT_DIR$/src/main/visitor/astPrinter/ASTPrinter.java" />
+        <option value="$PROJECT_DIR$/src/main/visitor/Visitor.java" />
+        <option value="$PROJECT_DIR$/src/SmoolaCompiler.java" />
+        <option value="$PROJECT_DIR$/in.sml" />
+        <option value="$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java" />
       </list>
     </option>
   </component>
@@ -330,6 +282,14 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="visitor" type="462c0819:PsiDirectoryNode" />
               <item name="astPrinter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="smoola-typecheck" type="b2602c69:ProjectViewProjectNode" />
+              <item name="smoola-typecheck" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="visitor" type="462c0819:PsiDirectoryNode" />
+              <item name="nameAnalyzer" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -478,15 +438,16 @@
       <option name="presentableId" value="Default" />
       <updated>1543651625383</updated>
       <workItem from="1543651626614" duration="5970000" />
-      <workItem from="1546972446389" duration="3657000" />
+      <workItem from="1546972446389" duration="8758000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36714000" />
+    <option name="totallyTimeSpent" value="41815000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -497,12 +458,12 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5735901" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45392022" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21890146" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13408723" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="ANTLR Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -510,7 +471,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39889959" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28198075" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -560,12 +521,25 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="39" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java</url>
+          <line>111</line>
+          <properties />
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="57" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>type.equals(&quot;int&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>this.name.getName()</expression-string>
         <language-id>JAVA</language-id>
@@ -589,20 +563,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/ast/node/expression/UnaryOperator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/ast/node/statement/Conditional.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="31" column="17" lean-forward="true" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/ast/node/statement/Statement.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -693,25 +653,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/symbolTable/SymbolTableItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="14" column="35" lean-forward="false" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gen/SmoolaParser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="3007" column="69" lean-forward="false" selection-start-line="3007" selection-start-column="69" selection-end-line="3007" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/visitor/astPrinter/ASTPrinter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-198">
-          <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -725,22 +670,6 @@
             <element signature="e#252#253#0" expanded="false" />
             <element signature="e#284#285#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Smoola.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/SmoolaCompiler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -764,17 +693,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-78">
           <caret line="586" column="13" lean-forward="false" selection-start-line="586" selection-start-column="11" selection-end-line="586" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/ast/node/expression/Identifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="24" column="22" lean-forward="false" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="22" />
-          <folding>
-            <element signature="e#379#380#0" expanded="false" />
-            <element signature="e#422#423#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -786,26 +705,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/ast/node/Node.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="31" lean-forward="true" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/ast/Type/Type.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/visitor/VisitorImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -867,14 +770,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/ast/node/declaration/MethodDeclaration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="15" column="38" lean-forward="false" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/ast/node/expression/MethodCall.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -899,14 +794,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/symbolTable/SymbolTable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="24" column="27" lean-forward="true" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/symbolTable/ClassSymbolTableItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -926,27 +813,137 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/ast/node/declaration/VarDeclaration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/ast/node/Node.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="18" lean-forward="false" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/ast/node/declaration/MethodDeclaration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="30" column="17" lean-forward="true" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/ast/node/expression/Identifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="11" column="25" lean-forward="false" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="25" />
+          <folding>
+            <element signature="e#234#235#0" expanded="true" />
+            <element signature="e#261#262#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/codeGenarator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="15" column="29" lean-forward="false" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/visitor/VisitorImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="327">
+          <caret line="71" column="53" lean-forward="false" selection-start-line="71" selection-start-column="53" selection-end-line="71" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/visitor/Visitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="13" column="33" lean-forward="true" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/visitor/astPrinter/ASTPrinter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="81" column="36" lean-forward="true" selection-start-line="81" selection-start-column="36" selection-end-line="81" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Smoola.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/in.sml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="16" column="4" lean-forward="false" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SmoolaCompiler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/symbolTable/SymbolTableItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="22" lean-forward="false" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/symbolTable/SymbolTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="99" column="41" lean-forward="true" selection-start-line="99" selection-start-column="41" selection-end-line="99" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1545">
-          <caret line="129" column="37" lean-forward="true" selection-start-line="129" selection-start-column="37" selection-end-line="129" selection-end-column="37" />
+        <state relative-caret-position="37">
+          <caret line="102" column="45" lean-forward="false" selection-start-line="102" selection-start-column="17" selection-end-line="102" selection-end-column="45" />
           <folding>
-            <element signature="method#visit#3;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#NameAnalyser#0;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#switchState#0;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#checkForPropertyRedefinition#0;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#checkForPropertyRedefinitionInParentScope#0;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#checkForPropertyRedefinition#2;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#visit#0;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#visit#1;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#visit#2;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#convertTypesToASM#0;class#NameAnalyser#0" expanded="false" />
+            <element signature="method#getArgTypes#0;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#4;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#5;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#6;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#7;class#NameAnalyser#0" expanded="false" />
+            <element signature="e#15945#15978#0" expanded="false" />
             <element signature="method#visit#8;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#9;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#10;class#NameAnalyser#0" expanded="false" />
+            <element signature="e#22848#22867#0" expanded="false" />
             <element signature="method#visit#11;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#12;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#13;class#NameAnalyser#0" expanded="false" />
@@ -955,24 +952,12 @@
             <element signature="method#visit#16;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#17;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#18;class#NameAnalyser#0" expanded="false" />
-            <element signature="e#22564#22611#0" expanded="false" />
+            <element signature="e#29703#29738#0" expanded="false" />
             <element signature="method#visit#19;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#20;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#21;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#22;class#NameAnalyser#0" expanded="false" />
             <element signature="method#addError#0;class#NameAnalyser#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/codeGenarator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="32" lean-forward="true" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
-          <folding>
-            <element signature="e#179#180#0" expanded="true" />
-            <element signature="e#200#201#0" expanded="true" />
-            <element signature="e#259#260#0" expanded="true" />
           </folding>
         </state>
       </provider>

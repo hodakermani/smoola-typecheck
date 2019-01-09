@@ -1,5 +1,6 @@
 package main.visitor;
 
+import jdk.internal.org.objectweb.asm.ClassWriter;
 import main.ast.node.Node;
 import main.ast.node.Program;
 import main.ast.node.declaration.ClassDeclaration;
@@ -18,9 +19,9 @@ public interface Visitor {
 
     //Declarations
     void visit(ClassDeclaration classDeclaration);
-    void visit(MethodDeclaration methodDeclaration);
+    void visit(MethodDeclaration methodDeclaration, ClassWriter cw);
     void visit(MainMethodDeclaration mainMethodDeclaration);
-    void visit(VarDeclaration varDeclaration);
+    void visit(VarDeclaration varDeclaration, ClassWriter cw);
 
     //Expressions
     void visit(ArrayCall arrayCall);

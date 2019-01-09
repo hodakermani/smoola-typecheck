@@ -24,8 +24,8 @@ public class SmoolaCompiler {
         }
         catch( Exception compileError )
         {
-//            compileError.printStackTrace();
-//            System.out.println( "----" + SmoolaCompiler.COMPILATION_TERMINATED_ERROR );
+            compileError.printStackTrace();
+            System.out.println( "----" + SmoolaCompiler.COMPILATION_TERMINATED_ERROR );
         }
     }
 }
