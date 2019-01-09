@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static jdk.internal.org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static jdk.internal.org.objectweb.asm.Opcodes.V1_8;
 import static sun.tools.java.RuntimeConstants.ACC_FINAL;
 
 public class NameAnalyser extends VisitorImpl {
@@ -37,12 +38,10 @@ public class NameAnalyser extends VisitorImpl {
     private TraverseState traverseState;
     private SymbolTableClassParentLinker symTableClassLinker;
     private ArrayList<String> nameErrors;
-    private ClassWriter cw;
     private int lastIndexOfVariable;
     public NameAnalyser()
     {
         symConstructor = new SymbolTableConstructor();
-        cw = new ClassWriter(0);
         symTableClassLinker = new SymbolTableClassParentLinker();
         nameErrors = new ArrayList<>();
         lastIndexOfVariable = 0;
@@ -202,12 +201,12 @@ public class NameAnalyser extends VisitorImpl {
     @Override
     public void visit(ClassDeclaration classDeclaration) {
         //TODO: implement appropriate visit functionality
-        ClassWriter cw = new ClassWriter(0);
-        cw.visitEnd();
-        byte[] b = cw.toByteArray();
+        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+
         if( classDeclaration == null )
             return;
         String className = classDeclaration.getName().getName();
+
         if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) ) {
             symConstructor.construct( classDeclaration, className);
         }
@@ -215,14 +214,40 @@ public class NameAnalyser extends VisitorImpl {
             checkForPropertyRedefinition( classDeclaration );
         visitExpr( classDeclaration.getName() );
         visitExpr( classDeclaration.getParentName() );
+
+        cw.visit(V1_8, ACC_PUBLIC, className, null, "java/lang/Object", new String[] { classDeclaration.getParentName().getName().toString() });
+
         for( VarDeclaration varDeclaration: classDeclaration.getVarDeclarations() ) {
             this.visit(varDeclaration);
-            cw.visitField(ACC_PUBLIC, varDeclaration.getIdentifier().getName().toString(), "I",
+            cw.visitField(ACC_PUBLIC , varDeclaration.getIdentifier().getName().toString(), convertTypesToASM(varDeclaration.selfType),
                     null, null).visitEnd();
         }
-        for( MethodDeclaration methodDeclaration: classDeclaration.getMethodDeclarations() )
-            this.visit( methodDeclaration , cw);
+        for( MethodDeclaration methodDeclaration: classDeclaration.getMethodDeclarations() ) {
+            MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, methodDeclaration.getName().toString(), "(" + getArgTypes(methodDeclaration.getArgs()) + ")" + methodDeclaration.getActualReturnType().toString(), null, null);
+            this.visit(methodDeclaration, mv);
+        }
         SymbolTable.pop();
+    }
+    public String convertTypesToASM (String type) {
+        if(type.equals("int")) {
+            return "I";
+        }  else if(type.equals("bool")) {
+            return "Z";
+        } else if (type.equals("int[]")) {
+            return "[I";
+        } else if(type.equals("string")) {
+            return "S";
+        } else {
+            return "Ljava/lang/Object;";
+        }
+    };
+
+    public String getArgTypes(ArrayList<VarDeclaration> vars) {
+        String s = "";
+        for( VarDeclaration varDeclaration: vars ) {
+            s += convertTypesToASM(varDeclaration.getType().toString());
+        }
+        return s;
     }
 
     @Override
