@@ -223,8 +223,7 @@ public class NameAnalyser extends VisitorImpl {
                     null, null).visitEnd();
         }
         for( MethodDeclaration methodDeclaration: classDeclaration.getMethodDeclarations() ) {
-            MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, methodDeclaration.getName().toString(), "(" + getArgTypes(methodDeclaration.getArgs()) + ")" + methodDeclaration.getActualReturnType().toString(), null, null);
-            this.visit(methodDeclaration, mv);
+            this.visit(methodDeclaration, cw);
         }
         SymbolTable.pop();
     }
@@ -251,7 +250,7 @@ public class NameAnalyser extends VisitorImpl {
     }
 
     @Override
-    public void visit(MethodDeclaration methodDeclaration, MethodVisitor mv) {
+    public void visit(MethodDeclaration methodDeclaration, ClassWriter cw) {
         //TODO: implement appropriate visit functionality
         if( methodDeclaration == null )
             return;
@@ -266,6 +265,15 @@ public class NameAnalyser extends VisitorImpl {
         for( Statement statement : methodDeclaration.getBody() )
             visitStatement( statement );
         visitExpr( methodDeclaration.getReturnValue() );
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, methodDeclaration.getName().toString(), "(" + getArgTypes(methodDeclaration.getArgs()) + ")" + methodDeclaration.getActualReturnType().toString(), null, null);
+        mv.visitCode();
+        Label methodStart = new Label();
+        Label methodEnd = new Label();
+        mv.visitLabel(methodStart);
+
+        for( VarDeclaration localVariable: methodDeclaration.getLocalVars() ) {
+            mv.visitLocalVariable(localVariable.getIdentifier().getName(),convertTypesToASM(localVariable.getType().toString()),null,methodStart,methodEnd, /*get indx of this variable from symbol table*/);
+        }
         SymbolTable.pop();
     }
 
