@@ -228,7 +228,7 @@ public class NameAnalyser extends VisitorImpl {
         }
         SymbolTable.pop();
     }
-    public String convertTypesToASM (String type) {
+    private String convertTypesToASM (String type) {
         if(type.equals("int")) {
             return "I";
         }  else if(type.equals("bool")) {
@@ -242,7 +242,7 @@ public class NameAnalyser extends VisitorImpl {
         }
     };
 
-    public String getArgTypes(ArrayList<VarDeclaration> vars) {
+    private String getArgTypes(ArrayList<VarDeclaration> vars) {
         String s = "";
         for( VarDeclaration varDeclaration: vars ) {
             s += convertTypesToASM(varDeclaration.getType().toString());
@@ -251,7 +251,7 @@ public class NameAnalyser extends VisitorImpl {
     }
 
     @Override
-    public void visit(MethodDeclaration methodDeclaration, ClassWriter cw) {
+    public void visit(MethodDeclaration methodDeclaration, MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         if( methodDeclaration == null )
             return;
