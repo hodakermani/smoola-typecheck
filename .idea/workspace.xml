@@ -42,19 +42,9 @@
       <file leaf-file-name="NameAnalyser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="122" column="37" lean-forward="true" selection-start-line="122" selection-start-column="37" selection-end-line="122" selection-end-column="37" />
+            <state relative-caret-position="1545">
+              <caret line="129" column="37" lean-forward="true" selection-start-line="129" selection-start-column="37" selection-end-line="129" selection-end-column="37" />
               <folding>
-                <element signature="method#NameAnalyser#0;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#switchState#0;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#checkForPropertyRedefinition#0;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#checkForPropertyRedefinitionInParentScopes#0;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#checkForPropertyRedefinition#1;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#checkForPropertyRedefinitionInParentScope#0;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#checkForPropertyRedefinition#2;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#visit#0;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#visit#1;class#NameAnalyser#0" expanded="false" />
-                <element signature="method#visit#2;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#3;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#4;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#5;class#NameAnalyser#0" expanded="false" />
@@ -71,7 +61,7 @@
                 <element signature="method#visit#16;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#17;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#18;class#NameAnalyser#0" expanded="false" />
-                <element signature="e#20199#20246#0" expanded="false" />
+                <element signature="e#22564#22611#0" expanded="false" />
                 <element signature="method#visit#19;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#20;class#NameAnalyser#0" expanded="false" />
                 <element signature="method#visit#21;class#NameAnalyser#0" expanded="false" />
@@ -488,12 +478,12 @@
       <option name="presentableId" value="Default" />
       <updated>1543651625383</updated>
       <workItem from="1543651626614" duration="5970000" />
-      <workItem from="1546972446389" duration="3614000" />
+      <workItem from="1546972446389" duration="3657000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36671000" />
+    <option name="totallyTimeSpent" value="36714000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -946,19 +936,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/visitor/nameAnalyzer/NameAnalyser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="122" column="37" lean-forward="true" selection-start-line="122" selection-start-column="37" selection-end-line="122" selection-end-column="37" />
+        <state relative-caret-position="1545">
+          <caret line="129" column="37" lean-forward="true" selection-start-line="129" selection-start-column="37" selection-end-line="129" selection-end-column="37" />
           <folding>
-            <element signature="method#NameAnalyser#0;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#switchState#0;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#checkForPropertyRedefinition#0;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#checkForPropertyRedefinitionInParentScopes#0;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#checkForPropertyRedefinition#1;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#checkForPropertyRedefinitionInParentScope#0;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#checkForPropertyRedefinition#2;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#visit#0;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#visit#1;class#NameAnalyser#0" expanded="false" />
-            <element signature="method#visit#2;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#3;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#4;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#5;class#NameAnalyser#0" expanded="false" />
@@ -975,7 +955,7 @@
             <element signature="method#visit#16;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#17;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#18;class#NameAnalyser#0" expanded="false" />
-            <element signature="e#20199#20246#0" expanded="false" />
+            <element signature="e#22564#22611#0" expanded="false" />
             <element signature="method#visit#19;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#20;class#NameAnalyser#0" expanded="false" />
             <element signature="method#visit#21;class#NameAnalyser#0" expanded="false" />
