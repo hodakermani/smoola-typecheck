@@ -1,5 +1,4 @@
 package main.visitor.nameAnalyzer;
-import jdk.internal.org.objectweb.asm.ClassWriter;
 import main.ast.Type.Type;
 import main.ast.Type.UserDefinedType.UserDefinedType;
 import main.ast.node.Node;
@@ -23,26 +22,20 @@ import main.symbolTable.symbolTableVariable.SymbolTableLocalVariableItem;
 import main.symbolTable.symbolTableVariable.SymbolTableMethodArgumentItem;
 import main.symbolTable.symbolTableVariable.SymbolTableVariableItemBase;
 import main.visitor.VisitorImpl;
-import jdk.internal.org.objectweb.asm.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
-import static jdk.internal.org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static sun.tools.java.RuntimeConstants.ACC_FINAL;
 
 public class NameAnalyser extends VisitorImpl {
     private SymbolTableConstructor symConstructor;
     private TraverseState traverseState;
     private SymbolTableClassParentLinker symTableClassLinker;
     private ArrayList<String> nameErrors;
-    private ClassWriter cw;
     private int lastIndexOfVariable;
     public NameAnalyser()
     {
         symConstructor = new SymbolTableConstructor();
-        cw = new ClassWriter(0);
         symTableClassLinker = new SymbolTableClassParentLinker();
         nameErrors = new ArrayList<>();
         lastIndexOfVariable = 0;
@@ -173,6 +166,7 @@ public class NameAnalyser extends VisitorImpl {
         checkForPropertyRedefinitionInParentScope( methodDeclaration );
         SymbolTable.push( next );
     }
+
     @Override
     public void visit(Node node) {
         //TODO: implement appropriate visit functionality
@@ -180,7 +174,6 @@ public class NameAnalyser extends VisitorImpl {
 
     @Override
     public void visit(Program program){
-
         //TODO: implement appropriate visit functionality
         while( !traverseState.toString().equals( TraverseState.Exit.toString() )) {
             if (traverseState.name().equals(TraverseState.symbolTableConstruction.toString()))
@@ -202,9 +195,6 @@ public class NameAnalyser extends VisitorImpl {
     @Override
     public void visit(ClassDeclaration classDeclaration) {
         //TODO: implement appropriate visit functionality
-        ClassWriter cw = new ClassWriter(0);
-        cw.visitEnd();
-        byte[] b = cw.toByteArray();
         if( classDeclaration == null )
             return;
         String className = classDeclaration.getName().getName();
@@ -215,18 +205,15 @@ public class NameAnalyser extends VisitorImpl {
             checkForPropertyRedefinition( classDeclaration );
         visitExpr( classDeclaration.getName() );
         visitExpr( classDeclaration.getParentName() );
-        for( VarDeclaration varDeclaration: classDeclaration.getVarDeclarations() ) {
-            this.visit(varDeclaration);
-            cw.visitField(ACC_PUBLIC, varDeclaration.getIdentifier().getName().toString(), "I",
-                    null, null).visitEnd();
-        }
+        for( VarDeclaration varDeclaration: classDeclaration.getVarDeclarations() )
+            this.visit( varDeclaration );
         for( MethodDeclaration methodDeclaration: classDeclaration.getMethodDeclarations() )
-            this.visit( methodDeclaration , cw);
+            this.visit( methodDeclaration );
         SymbolTable.pop();
     }
 
     @Override
-    public void visit(MethodDeclaration methodDeclaration, ClassWriter cw) {
+    public void visit(MethodDeclaration methodDeclaration) {
         //TODO: implement appropriate visit functionality
         if( methodDeclaration == null )
             return;
@@ -259,8 +246,7 @@ public class NameAnalyser extends VisitorImpl {
     }
 
     @Override
-    public void visit(VarDeclaration varDeclaration, ClassWriter cw) {
-
+    public void visit(VarDeclaration varDeclaration) {
         if( varDeclaration == null )
             return;
         if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
@@ -284,8 +270,7 @@ public class NameAnalyser extends VisitorImpl {
                 arrayCall.selfType = "int";
                 arrayCall.getType().isRightValue = true;
             } else {
-                //System.out.println("array call type error!");
-                this.addError("array call type error!", arrayCall.getLineNum());
+                System.out.println("array call type error!");
             }
         }
         catch( NullPointerException npe )
@@ -305,60 +290,6 @@ public class NameAnalyser extends VisitorImpl {
         try {
             visitExpr(lOperand);
             visitExpr(rOperand);
-            if(lOperand.typeCorrect && rOperand.typeCorrect) {
-                if(binaryExpression.getBinaryOperator().toString().equals("eq") || binaryExpression.getBinaryOperator().toString().equals("neq")) {
-                    if(lOperand.typeCorrect && rOperand.typeCorrect && !lOperand.selfType.equals(rOperand.selfType)) {
-                        binaryExpression.typeCorrect = false;
-                        this.addError("left and right side types of equality binaryExpressions must be equal",binaryExpression.getLineNum());
-                    } else if(lOperand.selfType.equals("int[]") && rOperand.selfType.equals("int[]")){
-                       //todo: check for length equality
-//                        System.out.println("haha");
-//                        ArrayCall a = (ArrayCall) lOperand;
-//                        ArrayCall b = (ArrayCall) rOperand;
-//                        if( ((IntValue) a.getIndex()).getConstant() == ((IntValue) b.getIndex()).getConstant()) {
-//                            binaryExpression.typeCorrect = true;
-//                            binaryExpression.selfType = "bool";
-//                        } else {
-//                            binaryExpression.typeCorrect = false;
-//                            System.out.println("arrays length do not match");
-//                        }
-                    }else {
-                        binaryExpression.typeCorrect = true;
-                        binaryExpression.selfType = "bool";
-                    }
-                } else if (binaryExpression.getBinaryOperator().toString().equals("and") || binaryExpression.getBinaryOperator().toString().equals("or")) {
-                    if(lOperand.typeCorrect && rOperand.typeCorrect) {
-                        if(lOperand.selfType.equals("bool") && rOperand.selfType.equals("bool")) {
-                            binaryExpression.selfType = "bool";
-                            binaryExpression.typeCorrect = true;
-                        } else {
-                            binaryExpression.typeCorrect = false;
-                            this.addError("and/or oprands must be boolean",binaryExpression.getLineNum());
-                        }
-                    }
-                } else if (binaryExpression.getBinaryOperator().toString().equals("lt") || binaryExpression.getBinaryOperator().toString().equals("gt") || binaryExpression.getBinaryOperator().toString().equals("lte")) {
-                    if(lOperand.typeCorrect && rOperand.typeCorrect) {
-                        if(lOperand.selfType.equals("int") && rOperand.selfType.equals("int")) {
-                            binaryExpression.selfType = "bool";
-                            binaryExpression.typeCorrect = true;
-                        } else {
-                            binaryExpression.typeCorrect = false;
-                            this.addError("gt/lt oprands must be int",binaryExpression.getLineNum());
-                        }
-                    }
-                } else if (binaryExpression.getBinaryOperator().toString().equals("div") || binaryExpression.getBinaryOperator().toString().equals("mult") &&
-                        binaryExpression.getBinaryOperator().toString().equals("add") || binaryExpression.getBinaryOperator().toString().equals("sub")) {
-                    if(lOperand.typeCorrect && rOperand.typeCorrect) {
-                        if(lOperand.selfType.equals("int") && rOperand.selfType.equals("int")) {
-                            binaryExpression.selfType = "int";
-                            binaryExpression.typeCorrect = true;
-                        } else {
-                            binaryExpression.typeCorrect = false;
-                            this.addError("arithmetical operators oprand must be int",binaryExpression.getLineNum());
-                        }
-                    }
-                }
-            }
         }
         catch( NullPointerException npe )
         {
@@ -396,7 +327,7 @@ public class NameAnalyser extends VisitorImpl {
             length.typeCorrect = true;
             length.selfType = "int";
         } else {
-            this.addError("invalid type for length function",length.getLineNum());
+            System.out.println("invalid method call for length");
         }
     }
 
@@ -408,7 +339,6 @@ public class NameAnalyser extends VisitorImpl {
             visitExpr(methodCall.getInstance());
             String className = methodCall.getInstance().getType().toString();
             ClassSymbolTableItem classSymbolTableItem = null;
-            SymbolTableMethodItem methodSymbolTableItem = null;
             try {
                 if( traverseState == TraverseState.redefinitionAndArrayErrorCatching )
                     classSymbolTableItem = (ClassSymbolTableItem) SymbolTable.root.find(className);
@@ -419,39 +349,12 @@ public class NameAnalyser extends VisitorImpl {
 
             String methodName = methodCall.getMethodName().getName();
             try {
-                Expression methodReturnType = ((SymbolTableMethodItem)classSymbolTableItem.getClassSym().find(methodName)).getMethodDeclaration().getReturnValue();
-                Type methodActualReturnType = ((SymbolTableMethodItem)classSymbolTableItem.getClassSym().find(methodName)).getMethodDeclaration().getActualReturnType();
-                visitExpr(methodReturnType);
-                methodCall.typeCorrect = true;
-                methodCall.selfType = methodReturnType.selfType;
-                if(!methodReturnType.getType().toString().equals(methodActualReturnType.toString())) {
-                   this.addError(methodName + " return type must be " + methodActualReturnType.toString(), methodCall.getLineNum()); //todo: extention not handled
-                }
-
-            } catch (ItemNotFoundException e) {
-                this.addError("there is no method named " + methodName + " in class " + className, methodCall.getInstance().getLineNum());
-                return;
-            }
-
-            try {
                 if( traverseState == TraverseState.redefinitionAndArrayErrorCatching )
                     classSymbolTableItem.getClassSym().find(methodName);
             } catch (ItemNotFoundException e) {
                 this.addError("there is no method named " + methodName + " in class " + className, methodCall.getInstance().getLineNum());
                 return;
             }
-
-
-//            try {
-//                if( traverseState == TraverseState.redefinitionAndArrayErrorCatching )
-//                    methodSymbolTableItem = (SymbolTableMethodItem) SymbolTable.root.find(methodName);
-//            }catch (ItemNotFoundException e) {
-//                this.addError("there is no method named " + methodName + " in class " + className, methodCall.getInstance().getLineNum());
-//                return;
-//            }
-//            if(!((methodSymbolTableItem.getMethodDeclaration().getReturnValue().getType()) instanceof (methodSymbolTableItem.getMethodDeclaration().getActualReturnType()))) {
-//                System.out.println("return type problem");
-//            }
 
             methodCall.getMethodName().setType(new UserDefinedType(methodCall.getMethodName()));
 
@@ -498,12 +401,9 @@ public class NameAnalyser extends VisitorImpl {
             if( newArray.getExpression() instanceof IntValue && ((IntValue) newArray.getExpression()).getConstant() <= 0 )
             {
                 nameErrors.add( "Line:" + newArray.getExpression().getLineNum() + ":Array length should not be zero or negative" );
-                newArray.typeCorrect = false;
                 ((IntValue) newArray.getExpression()).setConstant( 0 );
             }
         visitExpr( newArray.getExpression() );
-        newArray.typeCorrect = true;
-        newArray.selfType = "int[]";
     }
 
     @Override
@@ -511,11 +411,8 @@ public class NameAnalyser extends VisitorImpl {
         //TODO: implement appropriate visit functionality
         if( newClass == null )
             return;
-        UserDefinedType u = new UserDefinedType(newClass.getClassName());
-        newClass.setType(u);
-        newClass.typeCorrect = true;
-        newClass.selfType = newClass.getClassName().getName();
-        visitExpr( newClass.getClassName());
+        newClass.setType(new UserDefinedType(newClass.getClassName()));
+        visitExpr( newClass.getClassName() );
     }
 
     @Override
@@ -523,10 +420,7 @@ public class NameAnalyser extends VisitorImpl {
         SymbolTable top = SymbolTable.top.getPreSymbolTable();
         String className = top.getName();
         try {
-            Type t = SymbolTable.root.get(ClassSymbolTableItem.CLASS + className).getType();
-            instance.setType(t);
-            instance.typeCorrect = true;
-            instance.selfType = className;
+            instance.setType(SymbolTable.root.get(ClassSymbolTableItem.CLASS + className).getType());
         } catch (ItemNotFoundException e) {
             this.addError("class " + className + " is not declared" + className, instance.getLineNum());
         }
@@ -539,20 +433,10 @@ public class NameAnalyser extends VisitorImpl {
             return;
         try {
             visitExpr(unaryExpression.getValue());
-            if(unaryExpression.getValue().typeCorrect && unaryExpression.getValue().selfType.equals("bool") && unaryExpression.getUnaryOperator().toString().equals("not")) {
-                unaryExpression.typeCorrect = true;
-                unaryExpression.selfType = "bool";
-            } else if(unaryExpression.getValue().typeCorrect && unaryExpression.getValue().selfType.equals("int") && unaryExpression.getUnaryOperator().toString().equals("minus")) {
-                unaryExpression.typeCorrect = true;
-                unaryExpression.selfType = "int";
-            } else {
-                unaryExpression.typeCorrect = false;
-                this.addError("not a valid type for unary expression", unaryExpression.getLineNum());
-            }
         }
         catch( NullPointerException npe )
         {
-            System.out.println("unary value is null");
+            System.out.println( "unary value is null" );
         }
     }
 
@@ -560,7 +444,7 @@ public class NameAnalyser extends VisitorImpl {
     public void visit(BooleanValue value) {
         //TODO: implement appropriate visit functionality
         value.typeCorrect = true;
-        value.selfType = "bool";
+        value.selfType = "boolean";
     }
 
     @Override
@@ -588,21 +472,13 @@ public class NameAnalyser extends VisitorImpl {
             Expression rValExpr = assign.getrValue();
             if (rValExpr != null)
                 visitExpr(rValExpr);
-            if( lExpr instanceof BooleanValue ||  lExpr instanceof IntValue ||  lExpr instanceof StringValue) {
-                assign.typeCorrect = false;
-                this.addError("left side of assignment must be a valid lvalue", lExpr.getLineNum());
-            } else if(!lExpr.selfType.equals(rValExpr.selfType)) {
-                assign.typeCorrect = false;
-                this.addError("left side of assignment must be a valid lvalue", lExpr.getLineNum());
-            } else {
-                assign.typeCorrect = true;
-            }
-            //if (lExpr.getType().isRightValue)
-               // this.addError("left side of assignment must be a left value", lExpr.getLineNum());
+
+//            if (lExpr.getType().isRightValue)
+//                this.addError("left side of assignment must be a left value", lExpr.getLineNum());
         }
         catch( NullPointerException npe )
         {
-            System.out.println("lvalue expression is null");
+            System.out.println( "lvalue expression is null" );
         }
     }
 
@@ -623,12 +499,6 @@ public class NameAnalyser extends VisitorImpl {
         visitExpr( conditional.getExpression() );
         visitStatement( conditional.getConsequenceBody() );
         visitStatement( conditional.getAlternativeBody() );
-        if(conditional.getExpression().typeCorrect && conditional.getExpression().selfType.equals("bool")) {
-            conditional.typeCorrect = true;
-        } else {
-            conditional.typeCorrect = false;
-            this.addError("condition type must be boolean", conditional.getLineNum());
-        }
     }
 
     @Override
@@ -638,12 +508,7 @@ public class NameAnalyser extends VisitorImpl {
             return;
         visitExpr( loop.getCondition() );
         visitStatement( loop.getBody() );
-        if(loop.getCondition().typeCorrect && loop.getCondition().selfType.equals("bool")) {
-            loop.typeCorrect = true;
-        } else {
-            loop.typeCorrect = false;
-            this.addError("condition type must be boolean", loop.getLineNum());
-        }
+
     }
 
     @Override
