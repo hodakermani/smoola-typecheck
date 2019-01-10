@@ -19,8 +19,7 @@ class Test2 extends Test1 {
     def method2(hoda: int, s: MainClass): int {
         var heh: int;
         i = 10;
-        variable = new int[10];
-        heh = variable[true];
+        variable = 3;
         return "hi";
     }
 
@@ -37,7 +36,7 @@ class Test2 extends Test1 {
             b = false;
 
         while(a <> 0) {
-            a = b - 1;
+            a = - 1;
         }
 
         writeln("Hello kiki!");
@@ -55,8 +54,6 @@ class Test2 extends Test1 {
         test1 = new Test1();
         arr = new int[666];
         arr2 = new int[700];
-        writeln(this.method2());
-        this.method5();
         return 0;
     }
 }
