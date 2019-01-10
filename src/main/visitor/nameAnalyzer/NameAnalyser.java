@@ -25,8 +25,8 @@ import jdk.internal.org.objectweb.asm.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import static jdk.internal.org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static jdk.internal.org.objectweb.asm.Opcodes.V1_8;
+
+import static jdk.internal.org.objectweb.asm.Opcodes.*;
 
 public class NameAnalyser extends VisitorImpl {
     private SymbolTableConstructor symConstructor;
@@ -291,6 +291,9 @@ public class NameAnalyser extends VisitorImpl {
                     e.printStackTrace();
                 }
             }
+            for( Statement statement : methodDeclaration.getBody() ) {
+                visitStatement(statement, mv);
+            }
         }
 
         SymbolTable.pop();
@@ -347,7 +350,7 @@ public class NameAnalyser extends VisitorImpl {
     }
 
     @Override
-    public void visit(BinaryExpression binaryExpression) {
+    public void visit(BinaryExpression binaryExpression, MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         if( binaryExpression == null )
             return;
@@ -356,6 +359,8 @@ public class NameAnalyser extends VisitorImpl {
         try {
             visitExpr(lOperand);
             visitExpr(rOperand);
+            mv.visitVarInsn(ILOAD,/*index of left var*/);
+            mv.visitVarInsn(ILOAD,/*index of right var*/);
             if(lOperand.typeCorrect && rOperand.typeCorrect) {
                 if(binaryExpression.getBinaryOperator().toString().equals("eq") || binaryExpression.getBinaryOperator().toString().equals("neq")) {
                     if(lOperand.typeCorrect && rOperand.typeCorrect && !lOperand.selfType.equals(rOperand.selfType)) {
@@ -376,6 +381,7 @@ public class NameAnalyser extends VisitorImpl {
                     }else {
                         binaryExpression.typeCorrect = true;
                         binaryExpression.selfType = "bool";
+                        mv.visitJumpInsn(IF_ACMPEQ); //how to add label?
                     }
                 } else if (binaryExpression.getBinaryOperator().toString().equals("and") || binaryExpression.getBinaryOperator().toString().equals("or")) {
                     if(lOperand.typeCorrect && rOperand.typeCorrect) {
@@ -392,6 +398,13 @@ public class NameAnalyser extends VisitorImpl {
                         if(lOperand.selfType.equals("int") && rOperand.selfType.equals("int")) {
                             binaryExpression.selfType = "bool";
                             binaryExpression.typeCorrect = true;
+                            if(binaryExpression.getBinaryOperator().toString().equals("lt")) {
+                                mv.visitInsn(IF_ICMPLT);
+                            } else if(binaryExpression.getBinaryOperator().toString().equals("gt")) {
+                                mv.visitInsn(IF_ICMPGT);
+                            }else if(binaryExpression.getBinaryOperator().toString().equals("lte")) {
+                                mv.visitInsn(IF_ICMPLE);
+                            }
                         } else {
                             binaryExpression.typeCorrect = false;
                             this.addError("gt/lt oprands must be int",binaryExpression.getLineNum());
@@ -403,6 +416,15 @@ public class NameAnalyser extends VisitorImpl {
                         if(lOperand.selfType.equals("int") && rOperand.selfType.equals("int")) {
                             binaryExpression.selfType = "int";
                             binaryExpression.typeCorrect = true;
+                            if(binaryExpression.getBinaryOperator().toString().equals("add")) {
+                                mv.visitInsn(IADD);
+                            } else if(binaryExpression.getBinaryOperator().toString().equals("sub")) {
+                                mv.visitInsn(ISUB);
+                            } else if(binaryExpression.getBinaryOperator().toString().equals("div")) {
+                                mv.visitInsn(IDIV);
+                            }else if(binaryExpression.getBinaryOperator().toString().equals("mult")) {
+                                mv.visitInsn(IMUL);
+                            }
                         } else {
                             binaryExpression.typeCorrect = false;
                             this.addError("arithmetical operators oprand must be int",binaryExpression.getLineNum());
@@ -608,28 +630,31 @@ public class NameAnalyser extends VisitorImpl {
     }
 
     @Override
-    public void visit(BooleanValue value) {
+    public void visit(BooleanValue value,MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         value.typeCorrect = true;
         value.selfType = "bool";
+        mv.visitVarInsn(ILOAD, value.isConstant()); //from asm doc this should be ok
     }
 
     @Override
-    public void visit(IntValue value) {
+    public void visit(IntValue value, MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         value.typeCorrect = true;
         value.selfType = "int";
+        mv.visitVarInsn(ILOAD, value.getConstant());
     }
 
     @Override
-    public void visit(StringValue value) {
+    public void visit(StringValue value, MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         value.typeCorrect = true;
         value.selfType = "string";
+        mv.visitVarInsn(ILOAD, value.getConstant());
     }
 
     @Override
-    public void visit(Assign assign) {
+    public void visit(Assign assign, MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         if( assign == null )
             return;
