@@ -1,5 +1,6 @@
 package main.visitor.nameAnalyzer;
 import jdk.internal.org.objectweb.asm.ClassWriter;
+import main.*;
 import main.ast.Type.Type;
 import main.ast.Type.UserDefinedType.UserDefinedType;
 import main.ast.node.Node;
@@ -13,6 +14,7 @@ import main.ast.node.expression.Value.BooleanValue;
 import main.ast.node.expression.Value.IntValue;
 import main.ast.node.expression.Value.StringValue;
 import main.ast.node.statement.*;
+import main.codeGeneration.CodeGenerator;
 import main.symbolTable.ClassSymbolTableItem;
 import main.symbolTable.SymbolTable;
 import main.symbolTable.SymbolTableItem;
@@ -22,6 +24,8 @@ import main.symbolTable.symbolTableVariable.SymbolTableFieldVariableItem;
 import main.symbolTable.symbolTableVariable.SymbolTableVariableItemBase;
 import main.visitor.VisitorImpl;
 import jdk.internal.org.objectweb.asm.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -110,11 +114,6 @@ public class NameAnalyser extends VisitorImpl {
             SymbolTableVariableItemBase varItem = ( SymbolTableVariableItemBase) SymbolTable.top.getInCurrentScope( SymbolTableVariableItemBase.VARIABLE + name );
             varItem.setIndex( lastIndexOfVariable++ );
             SymbolTable.top.updateItemInCurrentScope( SymbolTableVariableItemBase.VARIABLE + name , varItem );
-
-            SymbolTable current = SymbolTable.top;
-
-
-
             if( varItem instanceof SymbolTableFieldVariableItem )
                 checkForPropertyRedefinitionInParentScopes(varDeclaration);
         }
@@ -226,6 +225,11 @@ public class NameAnalyser extends VisitorImpl {
         for( MethodDeclaration methodDeclaration: classDeclaration.getMethodDeclarations() )
             this.visit(methodDeclaration, cw);
 
+        try {
+            CodeGenerator.saveByteCode(cw);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         SymbolTable.pop();
     }
 
@@ -255,60 +259,77 @@ public class NameAnalyser extends VisitorImpl {
     public void visit(MethodDeclaration methodDeclaration, ClassWriter cw) {
         if( methodDeclaration == null )
             return;
+
+        MethodVisitor mv = null;
         if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) )
             symConstructor.construct( methodDeclaration );
-        else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) )
+
+        // constructing the bytecode should be done only in the second traverse state
+        else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) ) {
             checkForPropertyRedefinition( methodDeclaration );
+
+            String methodName = methodDeclaration.getName().toString();
+            String methodType = "(" + getArgTypes(methodDeclaration.getArgs()) + ")" + methodDeclaration.getActualReturnType().toString();
+            mv = cw.visitMethod(ACC_PUBLIC, methodName, methodType, null, null);
+            mv.visitCode();
+            Label methodStart = new Label();
+            Label methodEnd = new Label();
+            mv.visitLabel(methodStart);
+            for( VarDeclaration localVariable: methodDeclaration.getLocalVars() ) {
+                int index = getVariableIndex(localVariable.getIdentifier());
+                String varName = localVariable.getIdentifier().getName();
+                String convertedType = convertTypesToASM(localVariable.getType().toString());
+                mv.visitLocalVariable(varName, convertedType,null, methodStart, methodEnd, index);
+            }
+//            for( Statement statement : methodDeclaration.getBody() )
+                // todo: find the proper function to visit statements
+                // mv.visit?
+        }
 
         for( VarDeclaration argDeclaration: methodDeclaration.getArgs() )
             visit( argDeclaration, cw );
         for( VarDeclaration localVariable: methodDeclaration.getLocalVars() )
             this.visit( localVariable, cw );
         for( Statement statement : methodDeclaration.getBody() )
-            visitStatement( statement );
+            visitStatement( statement, mv );
         visitExpr( methodDeclaration.getReturnValue() );
-
-        // constructing the bytecode should be done only in the second traverse state
-        if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString() ) ) {
-            String methodName = methodDeclaration.getName().toString();
-            String methodType = "(" + getArgTypes(methodDeclaration.getArgs()) + ")" + methodDeclaration.getActualReturnType().toString();
-            MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, methodName, methodType, null, null);
-
-            mv.visitCode();
-            Label methodStart = new Label();
-            Label methodEnd = new Label();
-            mv.visitLabel(methodStart);
-
-            for( VarDeclaration localVariable: methodDeclaration.getLocalVars() ) {
-                try {
-                    String varName = localVariable.getIdentifier().getName();
-                    SymbolTable currentSymbolTable = SymbolTable.top;
-                    SymbolTableVariableItemBase item = (SymbolTableVariableItemBase)(currentSymbolTable.find(varName));
-                    int index = item.getIndex();
-
-                    mv.visitLocalVariable(localVariable.getIdentifier().getName(),convertTypesToASM(localVariable.getType().toString()),null, methodStart, methodEnd, index);
-                } catch (ItemNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-            for( Statement statement : methodDeclaration.getBody() ) {
-                visitStatement(statement, mv);
-            }
-        }
 
         SymbolTable.pop();
     }
 
     @Override
-    public void visit(MainMethodDeclaration mainMethodDeclaration) {
+    public void visit(MainMethodDeclaration mainMethodDeclaration, ClassWriter cw) {
         if( mainMethodDeclaration == null )
             return;
+
+        MethodVisitor mv = null;
         if( traverseState.name().equals( TraverseState.symbolTableConstruction.toString() ) )
-            visit( ( MethodDeclaration ) mainMethodDeclaration );
-        else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString()) )
-            visit( ( MethodDeclaration ) mainMethodDeclaration );
+            visit(mainMethodDeclaration);
+
+        // constructing the bytecode should be done only in the second traverse state
+        else if( traverseState.name().equals( TraverseState.redefinitionAndArrayErrorCatching.toString()) ) {
+            visit(mainMethodDeclaration);
+
+            String methodName = mainMethodDeclaration.getName().toString();
+            String methodType = "(" + getArgTypes(mainMethodDeclaration.getArgs()) + ")" + mainMethodDeclaration.getActualReturnType().toString();
+            mv = cw.visitMethod(ACC_PUBLIC, methodName, methodType, null, null);
+            mv.visitCode();
+            Label methodStart = new Label();
+            Label methodEnd = new Label();
+            mv.visitLabel(methodStart);
+            for( VarDeclaration localVariable: mainMethodDeclaration.getLocalVars() ) {
+                int index = getVariableIndex(localVariable.getIdentifier());
+                String varName = localVariable.getIdentifier().getName();
+                String convertedType = convertTypesToASM(localVariable.getType().toString());
+                mv.visitLocalVariable(varName, convertedType,null, methodStart, methodEnd, index);
+            }
+            // for( Statement statement : methodDeclaration.getBody() )
+            // todo: find the proper function to visit statements
+            // mv.visit?
+        }
+
         for( Statement statement : mainMethodDeclaration.getBody() )
-            visitStatement( statement );
+            visitStatement( statement, mv );
         visitExpr( mainMethodDeclaration.getReturnValue() );
     }
 
@@ -359,8 +380,8 @@ public class NameAnalyser extends VisitorImpl {
         try {
             visitExpr(lOperand);
             visitExpr(rOperand);
-            mv.visitVarInsn(ILOAD,/*index of left var*/);
-            mv.visitVarInsn(ILOAD,/*index of right var*/);
+//            mv.visitVarInsn(ILOAD,/*index of left var*/);
+//            mv.visitVarInsn(ILOAD,/*index of right var*/);
             if(lOperand.typeCorrect && rOperand.typeCorrect) {
                 if(binaryExpression.getBinaryOperator().toString().equals("eq") || binaryExpression.getBinaryOperator().toString().equals("neq")) {
                     if(lOperand.typeCorrect && rOperand.typeCorrect && !lOperand.selfType.equals(rOperand.selfType)) {
@@ -381,7 +402,9 @@ public class NameAnalyser extends VisitorImpl {
                     }else {
                         binaryExpression.typeCorrect = true;
                         binaryExpression.selfType = "bool";
-                        mv.visitJumpInsn(IF_ACMPEQ); //how to add label?
+                        // todo: how to add label?
+                        Label label =  new Label();
+                        mv.visitJumpInsn(IF_ACMPEQ, label);
                     }
                 } else if (binaryExpression.getBinaryOperator().toString().equals("and") || binaryExpression.getBinaryOperator().toString().equals("or")) {
                     if(lOperand.typeCorrect && rOperand.typeCorrect) {
@@ -634,7 +657,6 @@ public class NameAnalyser extends VisitorImpl {
         //TODO: implement appropriate visit functionality
         value.typeCorrect = true;
         value.selfType = "bool";
-        mv.visitVarInsn(ILOAD, value.isConstant()); //from asm doc this should be ok
     }
 
     @Override
@@ -642,7 +664,6 @@ public class NameAnalyser extends VisitorImpl {
         //TODO: implement appropriate visit functionality
         value.typeCorrect = true;
         value.selfType = "int";
-        mv.visitVarInsn(ILOAD, value.getConstant());
     }
 
     @Override
@@ -650,7 +671,6 @@ public class NameAnalyser extends VisitorImpl {
         //TODO: implement appropriate visit functionality
         value.typeCorrect = true;
         value.selfType = "string";
-        mv.visitVarInsn(ILOAD, value.getConstant());
     }
 
     @Override
@@ -683,22 +703,22 @@ public class NameAnalyser extends VisitorImpl {
     }
 
     @Override
-    public void visit(Block block) {
+    public void visit(Block block, MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         if( block == null )
             return;
         for( Statement blockStat : block.getBody() )
-            this.visitStatement( blockStat );
+            this.visitStatement( blockStat, mv );
     }
 
     @Override
-    public void visit(Conditional conditional) {
+    public void visit(Conditional conditional, MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         if( conditional == null )
             return;
         visitExpr( conditional.getExpression() );
-        visitStatement( conditional.getConsequenceBody() );
-        visitStatement( conditional.getAlternativeBody() );
+        visitStatement( conditional.getConsequenceBody(), mv );
+        visitStatement( conditional.getAlternativeBody(), mv );
         if(conditional.getExpression().typeCorrect && conditional.getExpression().selfType.equals("bool")) {
             conditional.typeCorrect = true;
         } else {
@@ -708,12 +728,12 @@ public class NameAnalyser extends VisitorImpl {
     }
 
     @Override
-    public void visit(While loop) {
+    public void visit(While loop, MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         if( loop == null )
             return;
         visitExpr( loop.getCondition() );
-        visitStatement( loop.getBody() );
+        visitStatement( loop.getBody(), mv );
         if(loop.getCondition().typeCorrect && loop.getCondition().selfType.equals("bool")) {
             loop.typeCorrect = true;
         } else {
@@ -723,7 +743,7 @@ public class NameAnalyser extends VisitorImpl {
     }
 
     @Override
-    public void visit(Write write) {
+    public void visit(Write write, MethodVisitor mv) {
         //TODO: implement appropriate visit functionality
         if( write == null )
             return;
@@ -739,5 +759,17 @@ public class NameAnalyser extends VisitorImpl {
     private void addError(String msg, int lineNumber) {
         if( traverseState == TraverseState.redefinitionAndArrayErrorCatching )
             nameErrors.add( "Line:" + lineNumber + ":" + msg );
+    }
+
+    private int getVariableIndex(Identifier var) {
+        String varName = var.getName();
+        SymbolTable currentSymbolTable = SymbolTable.top;
+        SymbolTableVariableItemBase item = null;
+        try {
+            item = (SymbolTableVariableItemBase)(currentSymbolTable.find(varName));
+        } catch (ItemNotFoundException e) {
+            e.printStackTrace();
+        }
+        return item.getIndex();
     }
 }

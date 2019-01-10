@@ -1,6 +1,5 @@
 import main.compileError.CompileErrorException;
 import main.ast.node.Program;
-import main.visitor.astPrinter.ASTPrinter;
 import main.visitor.nameAnalyzer.NameAnalyser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -19,8 +18,6 @@ public class SmoolaCompiler {
             if( nameAnalyser.numOfErrors() != 0 ) {
                 throw new CompileErrorException();
             }
-            ASTPrinter printer = new ASTPrinter();
-            printer.visit( program );
         }
         catch( Exception compileError )
         {

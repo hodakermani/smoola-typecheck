@@ -17,7 +17,7 @@ import main.ast.node.statement.*;
 public abstract class VisitorImpl implements Visitor {
     protected void visitStatement( Statement stat, MethodVisitor mv )
     {
-        if( stat == null )
+        if( stat == null || mv == null)
             return;
         else if( stat instanceof Write )
             this.visit( ( Write ) stat,  mv );
@@ -65,12 +65,12 @@ public abstract class VisitorImpl implements Visitor {
     //Declarations
     public abstract void visit (ClassDeclaration classDeclaration);
     public abstract void visit (MethodDeclaration methodDeclaration, ClassWriter cw);
-    public abstract void visit (MainMethodDeclaration mainMethodDeclaration);
+    public abstract void visit (MainMethodDeclaration mainMethodDeclaration, ClassWriter cw);
     public abstract void visit (VarDeclaration varDeclaration, ClassWriter cw);
 
     //Expressions
     public abstract void visit(ArrayCall arrayCall);
-    public abstract void visit(BinaryExpression binaryExpression);
+    public abstract void visit(BinaryExpression binaryExpression, MethodVisitor mv);
     public abstract void visit(Identifier identifier);
     public abstract void visit(Length length);
     public abstract void visit(MethodCall methodCall);
@@ -78,14 +78,14 @@ public abstract class VisitorImpl implements Visitor {
     public abstract void visit(NewClass newClass);
     public abstract void visit(This instance);
     public abstract void visit(UnaryExpression unaryExpression);
-    public abstract void visit(BooleanValue value);
-    public abstract void visit(IntValue value);
-    public abstract void visit(StringValue value);
+    public abstract void visit(BooleanValue value, MethodVisitor mv);
+    public abstract void visit(IntValue value, MethodVisitor mv);
+    public abstract void visit(StringValue value, MethodVisitor mv);
 
     //Statements
-    public abstract void visit(Assign assign);
-    public abstract void visit(Block block);
-    public abstract void visit(Conditional conditional);
-    public abstract void visit(While loop);
-    public abstract void visit(Write write);
+    public abstract void visit(Assign assign, MethodVisitor mv);
+    public abstract void visit(Block block, MethodVisitor mv);
+    public abstract void visit(Conditional conditional, MethodVisitor mv);
+    public abstract void visit(While loop, MethodVisitor mv);
+    public abstract void visit(Write write, MethodVisitor mv);
 }

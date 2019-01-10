@@ -23,37 +23,7 @@ class Test2 extends Test1 {
         return "hi";
     }
 
-    def method3(): int {
-        var b: boolean;
-        var a: int;
-        a = 2;
-        b = true;
-        i = 20;
-        variable = 20;
-        if(a == 2) then
-            b = true;
-        else
-            b = false;
-
-        while(a <> 0) {
-            a = - 1;
-        }
-
-        writeln("Hello kiki!");
-        return 0;
-    }
     def salam(): string {
         return "salam";
-    }
-
-    def method4(): int {
-        var arr : int[];
-        var arr2: int[];
-        var man: int;
-        var test1: Test1;
-        test1 = new Test1();
-        arr = new int[666];
-        arr2 = new int[700];
-        return 0;
     }
 }
