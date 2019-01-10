@@ -1,6 +1,7 @@
 package main.visitor;
 
 import jdk.internal.org.objectweb.asm.ClassWriter;
+import jdk.internal.org.objectweb.asm.MethodVisitor;
 import main.ast.node.Node;
 import main.ast.node.Program;
 import main.ast.node.declaration.ClassDeclaration;
@@ -14,20 +15,20 @@ import main.ast.node.expression.Value.StringValue;
 import main.ast.node.statement.*;
 
 public abstract class VisitorImpl implements Visitor {
-    protected void visitStatement( Statement stat )
+    protected void visitStatement( Statement stat, MethodVisitor mv )
     {
         if( stat == null )
             return;
         else if( stat instanceof Write )
-            this.visit( ( Write ) stat );
+            this.visit( ( Write ) stat,  mv );
         else if( stat instanceof Block )
-            this.visit( ( Block ) stat );
+            this.visit( ( Block ) stat,  mv );
         else if( stat instanceof Conditional )
-            this.visit( ( Conditional ) stat );
+            this.visit( ( Conditional ) stat,  mv );
         else if( stat instanceof Assign )
-            this.visit( ( Assign ) stat );
+            this.visit( ( Assign ) stat, mv );
         else if( stat instanceof While )
-            this.visit( ( While ) stat );
+            this.visit( ( While ) stat, mv );
     }
     protected void visitExpr( Expression expr )
     {
